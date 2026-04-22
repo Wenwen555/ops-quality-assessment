@@ -1,0 +1,96 @@
+site_name: Ops Quality Assessment
+site_description: 多模态算子质量评估技术文档
+site_url: https://Wenwen555.github.io/ops-quality-assessment/
+repo_url: https://github.com/Wenwen555/ops-quality-assessment
+repo_name: Wenwen555/ops-quality-assessment
+
+theme:
+  name: material
+  language: zh
+  font: false
+  logo: assets/images/logo.svg
+  favicon: assets/images/logo.svg
+  palette:
+    - scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: 切换到暗黑模式
+    - scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: 切换到白色模式
+  features:
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+    - content.tabs.link
+
+nav:
+  - 总览: index.md
+  - 设计逻辑:
+      - 设计目标: design-goals.md
+      - Pipeline 边界: pipeline-boundary.md
+      - 独立评估链路: evaluation-flow.md
+      - 资源控制: resource-control.md
+  - 指标定义:
+      - 指标总览: metrics/index.md
+      - 图文语义对齐: metrics/image-text-alignment.md
+      - 视频-图采样对齐: metrics/video-image-alignment.md
+      - 跨模态语义相似度: metrics/cross-modal-semantic-similarity.md
+      - 概念覆盖率: metrics/concept-coverage.md
+      - 文本语义保持: metrics/text-semantic-preservation.md
+      - 模态差距: metrics/modality-gap.md
+      - QAE 证据对齐: metrics/qae-grounding-alignment.md
+      - 连贯性评分: metrics/coherence-score.md
+  - 报告格式: report-format.md
+  - 实现路线: implementation-roadmap.md
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+
+plugins:
+  - search:
+      lang:
+        - zh
+        - en
+
+extra_css:
+  - assets/stylesheets/extra.css
+
+extra:
+  generator: false

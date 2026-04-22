@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Ops Quality Assessment">
+  <rect width="64" height="64" rx="10" fill="#f7f1e3"/>
+  <path d="M14 15h36v34H14z" fill="#fffaf0" stroke="#1f2a2e" stroke-width="3"/>
+  <path d="M22 25h20M22 33h14M22 41h22" stroke="#1f2a2e" stroke-width="3" stroke-linecap="round"/>
+  <path d="M48 15v34" stroke="#b54632" stroke-width="3"/>
+</svg>
