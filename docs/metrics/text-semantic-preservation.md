@@ -25,31 +25,24 @@
 
 ## 推荐模型
 
-- BGE-M3
-- Sentence-BERT
-- BERTScore
-- ROUGE-L
-- BLEU
-- NLI contradiction model
+- BGE-M3 或 Sentence-BERT：计算 before / after 的语义相似度，用于 `semantic_preservation_score` 和 `semantic_drift_rate`
+- BERTScore：作为 token-level 语义对齐补充，可并入 `semantic_preservation_score`
+- NLI contradiction model：可选扩展；后续用于检测 before / after 是否存在语义矛盾
 
 ## 实现逻辑
 
 ```text
 1. 读取 before_text_key 和 after_text_key。
-2. 计算 embedding cosine similarity。
-3. 计算 BERTScore 和 ROUGE-L。
-4. 对高风险样本运行 NLI contradiction 检测。
-5. 对 chunks 聚合后与 source_text 比较，判断分块是否造成语义丢失。
+2. 使用 embedding cosine similarity 计算每个样本的 `semantic_preservation_score`。
+3. 可选结合 BERTScore F1，对语义保持分数进行补充校准。
+4. 根据语义保持分数阈值识别明显语义漂移样本，并计算 `semantic_drift_rate`。
 ```
 
 ## 输出指标
 
 - `semantic_preservation_score`
-- `bertscore_f1`
-- `rouge_l`
-- `nli_contradiction_rate`
 - `semantic_drift_rate`
-- `low_preservation_samples`
+- `nli_contradiction_rate`（可选扩展，第一版不实现）
 
 ## 失败或不适用条件
 

@@ -11,7 +11,6 @@
 - `text`
 - 可配置 `before_text_key`
 - 可配置 `after_text_key`
-- 可选：operation tracking 中的 before / after snapshot
 
 ## 上游产物
 
@@ -30,23 +29,18 @@
 ## 实现逻辑
 
 ```text
-1. 在 before_text 中匹配可规范化 pattern，例如 MM/DD/YYYY、Month DD, YYYY、$50。
-2. 在 after_text 中检查是否转换为目标格式，例如 YYYY-MM-DD、50 USD。
-3. 统计仍残留的未规范化 pattern。
-4. 检测明显错误转换，例如非法日期、货币符号丢失、文本主体被误删。
-5. 汇总转换成功率、残留率、异常转换样本。
+1. 基于 pattern inventory 在 before_text 中定位所有应被规范化的目标片段
+2. 在 after_text 中重新扫描旧格式 pattern，统计仍残留的未规范化片段，并计算 `residual_unstandardized_pattern_rate`
+3. 对 after_text 中的规范化结果做合法性校验，例如日期是否为真实日期、货币数值和单位是否完整、空白和标点是否符合目标格式
+4. 统计非法或明显错误的规范化结果，并计算 `invalid_normalized_value_rate`
 ```
 
 ## 输出指标
 
 | 指标 | 含义 | 方向 |
 | --- | --- | --- |
-| `date_normalization_success_rate` | 日期 pattern 成功规范化比例 | 越高越好 |
-| `currency_normalization_success_rate` | 货币 pattern 成功规范化比例 | 越高越好 |
 | `residual_unstandardized_pattern_rate` | 规范化后仍残留旧格式的比例 | 越低越好 |
 | `invalid_normalized_value_rate` | 转换后不合法值比例 | 越低越好 |
-| `text_body_preservation_rate` | 非目标文本主体保留比例 | 越高越好 |
-| `normalization_failure_samples` | 失败样本列表 | 用于复核 |
 
 ## 失败或不适用条件
 
@@ -55,4 +49,3 @@
 | 缺少 before / after 字段 | `failed_precondition` |
 | 样本中没有可规范化 pattern | `not_applicable` |
 | pattern 规则未配置 | `failed_precondition` |
-

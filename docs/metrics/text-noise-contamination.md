@@ -10,9 +10,8 @@
 
 - `text`
 - 可配置 `text_key`
-- 可选：`input_text`、`caption`、`description_units[].description_text`、`text_signals[].text`
+- 可选：`input_text`、`caption`
 - 可选：`blocklist`
-- 可选：`special_chars`
 
 ## 上游产物
 
@@ -34,10 +33,7 @@
 ```text
 1. 读取目标文本字段，空值单独统计。
 2. 计算 n-gram repetition ratio，识别模板化或重复生成。
-3. 检测重复词、重复标点、异常连续字符。
-4. 检测 HTML tag、路径片段、代码片段、控制字符等特殊污染。
-5. 统计 blocklist 命中次数和命中样本比例。
-6. 聚合噪声分布，并输出 Top-K 高污染样本。
+3. 统计 blocklist 命中次数和命中样本比例。
 ```
 
 ## 输出指标
@@ -46,11 +42,7 @@
 | --- | --- | --- |
 | `empty_text_rate` | 空文本样本比例 | 越低越好 |
 | `ngram_repetition_rate_mean` | 平均 n-gram 重复率 | 越低越好 |
-| `high_repetition_sample_rate` | 超过重复阈值的样本比例 | 越低越好 |
-| `repeat_punctuation_rate` | 重复标点污染比例 | 越低越好 |
-| `special_char_hit_rate` | 特殊字符命中样本比例 | 越低越好 |
 | `blocklist_hit_rate` | blocklist 命中样本比例 | 越低越好 |
-| `top_contaminated_samples` | 高污染样本列表 | 用于复核 |
 
 ## 失败或不适用条件
 

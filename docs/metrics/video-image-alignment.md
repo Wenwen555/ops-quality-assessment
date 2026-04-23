@@ -19,34 +19,36 @@
 - `video_sampling(save_sample_frames=True)` 产出的 `samples[].frame_path`。
 
 ## 推荐模型
-
-- CLIP frame embedding pooling
-- `nvidia/Cosmos-Embed1-224p`
-- OpenCV frame extraction
-- segment-level frame diversity scoring
+- `nvidia/Cosmos-Embed1-224p` 或同类 video-image embedding 模型
+- OpenCV frame extraction / timestamp reader
 
 ## 实现逻辑
 
 ```text
-1. 按 segment_id 聚合 samples。
-2. 编码每个 sample frame 的图像 embedding。
-3. 对同一 segment 的多帧 embedding 做 mean pooling / attention pooling。
-4. 如果有 Cosmos 视频片段 embedding，则比较 segment video embedding 与 frame pooled embedding。
-5. 如果无视频 embedding，则记录 failed_precondition。
-6. 输出每个 segment 的 frame representativeness 和 segment-frame alignment score。
+1. 按 segment_id 聚合 samples，并读取每个 segment 的 timestamp_range。
+2. 使用同一个 video-image embedding 模型编码视频片段和对应采样帧。
+3. 对同一 segment 内的采样帧 embedding 做 mean pooling。
+4. 计算 segment video embedding 与 pooled frame embedding 的 cosine similarity，并聚合为 `segment_frame_alignment_mean`。
+5. 根据采样帧 timestamp 是否覆盖对应 segment 的有效时间范围，计算 `temporal_coverage_rate`。
 ```
 
 ## 输出指标
 
 - `segment_frame_alignment_mean`
-- `frame_representativeness_mean`
-- `frame_diversity_mean`
 - `temporal_coverage_rate`
+
+## 可能扩展功能
+
+| 功能 | 说明 |
+| --- | --- |
+| `frame_representativeness_mean` | 在缺少视频片段 embedding 时，用 segment 内帧间一致性近似衡量代表性。 |
+| `frame_diversity_mean` | 衡量采样帧是否覆盖不同视觉状态，避免多帧几乎重复。 |
+| attention pooling | 用 attention pooling 替代 mean pooling，提高多帧聚合质量。 |
 
 ## 失败或不适用条件
 
 | 条件 | 状态 |
 | --- | --- |
 | 无 `video_path` 或 `segments` | `failed_precondition` |
-| segment 无采样帧 | segment-level failure |
+| segment 无采样帧 | `partial_failure` |
 | 数据集不包含视频模态 | `not_applicable` |

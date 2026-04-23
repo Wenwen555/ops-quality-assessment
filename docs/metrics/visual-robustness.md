@@ -21,20 +21,15 @@
 ## 推荐模型与工具
 
 - CLIP / DINO image embedding
-- SSIM / LPIPS / DISTS
-- blur、brightness、contrast、noise、color histogram 等图像统计量
-- edge density、connected components、blank image detector
-- operator configuration parser
+- SSIM
 
 ## 实现逻辑
 
 ```text
 1. 为处理前图像和处理后图像构建 paired samples。
-2. 计算原图与处理后图像的 embedding drift 和 perceptual distance。
-3. 统计亮度、对比度、模糊度、噪声、颜色分布等质量变化。
-4. 对随机变换产物计算 variant dispersion，识别同一原图下不稳定输出。
-5. 对 Canny 等结构化输出检查 blank map、过密边缘、过稀边缘和连通域异常。
-6. 按算子类型聚合稳定性分数，并输出高漂移、高退化样本。
+2. 使用 CLIP / DINO 编码处理前后图像，计算 embedding drift，并聚合为 `embedding_drift_mean`。
+3. 使用 SSIM 计算处理前后图像结构相似度，并聚合为 `structural_similarity_mean`。
+4. 按算子类型聚合上述分数，输出数据集级视觉稳定性结果。
 ```
 
 ## 输出指标
@@ -42,11 +37,16 @@
 | 指标 | 含义 | 方向 |
 | --- | --- | --- |
 | `embedding_drift_mean` | 处理前后视觉 embedding 平均漂移 | 越低越好 |
-| `perceptual_distance_mean` | 处理前后感知距离，例如 LPIPS / DISTS | 越低越好 |
 | `structural_similarity_mean` | 处理前后结构相似度，例如 SSIM | 越高越好 |
-| `quality_stat_delta_mean` | 亮度、对比度、模糊度、噪声等统计量变化 | 越低越好 |
-| `variant_dispersion_mean` | 同一原图多个随机变换产物之间的离散度 | 越低越好 |
 
+## 可能扩展功能
+
+| 功能 | 说明 |
+| --- | --- |
+| `perceptual_distance_mean` | 使用 LPIPS / DISTS 更细粒度衡量感知退化。 |
+| `quality_stat_delta_mean` | 统计亮度、对比度、模糊度、噪声和颜色分布变化。 |
+| `variant_dispersion_mean` | 衡量同一原图多个随机变换产物之间的稳定性。 |
+| structured output checks | 对 Canny 等结构化输出检查 blank map、边缘密度和连通域异常。 |
 
 ## 失败或不适用条件
 

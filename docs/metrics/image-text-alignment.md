@@ -21,32 +21,32 @@
 ## 推荐模型
 
 - `openai/clip-vit-base-patch32`
-- BLIP image-text matching
 - CLIPScore
-- hard negative retrieval
 
 ## 实现逻辑
 
 ```text
 1. 构建视觉-文本 pair，例如 image-caption、frame-description、frame-text_signal。
 2. 用 CLIP 分别编码图像和文本。
-3. 计算 cosine similarity。
-4. 在同 batch 内构造负样本，计算 positive score 与 hardest negative score 的 margin。
-5. 可选对处理前后 embedding drift 做对比，用于发现文本改写或采样策略造成的语义偏移。
-6. 可选用 BLIP ITM 输出匹配概率。
-7. 按 pair type 聚合 mean、p10、p50、p90、low_score_rate、negative_margin。
+3. 计算图像 embedding 与文本 embedding 的 cosine similarity，得到 pair-level CLIPScore。
+4. 聚合所有 pair 的平均分，输出 `clip_score_mean`。
+5. 根据 CLIPScore 阈值统计低对齐 pair 的比例，输出 `low_alignment_rate`。
 ```
 
 ## 输出指标
 
 - `clip_score_mean`
-- `clip_score_p10`
-- `itm_score_mean`
-- `retrieval_recall_at_1`
-- `hard_negative_margin_mean`
-- `embedding_drift`
 - `low_alignment_rate`
-- `pair_type_scores`
+
+## 可能扩展功能
+
+| 功能 | 说明 |
+| --- | --- |
+| `clip_score_p10` | 观察低分尾部质量，比均值更敏感。 |
+| `itm_score_mean` | 使用 BLIP image-text matching 输出匹配概率。 |
+| `hard_negative_margin_mean` | 构造 batch 内 hard negative，评估正负样本区分度。 |
+| `retrieval_recall_at_1` | 将图文对齐转成检索任务进行评估。 |
+| `embedding_drift` | 对处理前后图文 embedding 变化做额外追踪。 |
 
 ## 失败或不适用条件
 
