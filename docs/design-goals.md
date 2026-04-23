@@ -15,10 +15,14 @@
 
 | 能力 | 覆盖问题 | 代表指标 |
 | --- | --- | --- |
-| 跨模态对齐 | 图像、视频帧、文本、答案是否讲述同一语义 | `image_text_alignment`, `cross_modal_semantic_similarity` |
-| 视频证据代表性 | 采样帧、片段、时间窗口是否互相支持 | `video_image_alignment`, `coherence_score` |
+| 文本噪声与污染 | 重复、特殊字符、黑名单、模板化文本是否污染数据 | `text_noise_contamination` |
+| 文本规范化有效性 | 日期、货币、空白、标点是否符合约定格式 | `text_normalization_validity` |
+| 图文/帧文对齐 | 图像、视频帧与文本描述是否讲述同一语义 | `image_text_alignment` |
+| 视频证据代表性 | 采样帧、片段、时间窗口是否互相支持，并发现重复模板化或证据断裂 | `video_image_alignment`, `coherence_score` |
 | 语义保持 | 文本处理前后是否丢失或改变含义 | `text_semantic_preservation` |
-| 概念完整性 | 关键对象、动作、场景、属性是否覆盖 | `concept_coverage` |
+| 物体幻觉诊断 | caption 或中间文本提到的 object 是否真实存在 | `chair_object_hallucination` |
+| 视觉变换一致性 | crop、flip、Canny 等视觉变换是否保持样本语义和结构 | `visual_transform_consistency` |
+| 视觉鲁棒性 | 图像算子处理前后是否保持视觉稳定，且不依赖下游任务 evaluator | `visual_robustness` |
 | 问答证据可信度 | QAE triplet 是否能回溯到证据 | `qae_grounding_alignment` |
 
 ## 非目标

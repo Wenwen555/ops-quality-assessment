@@ -7,9 +7,6 @@
 ## 输入字段
 
 - `qae_triplets`
-- `qae_triplets[].question`
-- `qae_triplets[].answer`
-- `qae_triplets[].evidence_refs`
 - `scaffold_units`
 - `description_units`
 - `text_signals`
@@ -25,7 +22,6 @@
 
 ## 推荐模型
 
-- 规则证据回溯
 - BGE / Sentence-BERT
 - NLI model
 - 可选 VLM/LLM judge
@@ -37,7 +33,6 @@
 2. 判断每个 question 是否有可用 evidence。
 3. 判断 answer 是否能被 evidence 文本或采样帧支持。
 4. 判断 evidence 的 timestamp_range 是否落在目标 segment 或 temporal unit 内。
-5. 对低置信样本可调用 VLM/LLM judge 做二次判断。
 ```
 
 ## 输出指标
@@ -47,7 +42,6 @@
 - `temporal_grounding_rate`
 - `unsupported_answer_rate`
 - `missing_evidence_rate`
-- `low_grounding_triplets`
 
 ## 失败或不适用条件
 

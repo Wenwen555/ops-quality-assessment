@@ -65,53 +65,18 @@ flowchart TB
     D --> E[run evaluators]
     E --> F[aggregate reports]
     F --> G[ops_quality_report.md]
+    F --> H[ops_quality_report.json]
 ```
 
 </section>
 
 </div>
 
-??? info "展开完整端到端链路"
-    ```mermaid
-    flowchart LR
-        subgraph P[Data Processing Pipeline]
-            A[loading] --> B[cleaning / augmentation]
-            B --> C[generation / video ops]
-            C --> D[saving]
-        end
 
-        D --> E[(dataset snapshot)]
-        D --> F[(artifacts)]
-        D --> G[(optional manifest)]
-
-        subgraph Q[Ops Quality Assessor]
-            H[load input] --> I[inspect schema]
-            I --> J[plan metrics]
-            J --> K[sample records]
-            K --> L[run evaluators]
-            L --> M[aggregate reports]
-        end
-
-        E --> H
-        F --> H
-        G --> H
-        M --> N[ops_quality_report.md]
-        M --> O[ops_quality_report.json]
-        M --> R[low_quality_samples.jsonl]
-    ```
-
-## 必测指标
-
-| 指标 | 主要问题 | 默认级别 |
-| --- | --- | --- |
-| [`image_text_alignment`](metrics/image-text-alignment.md) | 图像与 caption 是否语义一致 | `standard` |
-| [`video_image_alignment`](metrics/video-image-alignment.md) | 采样帧是否代表视频片段 | `standard` |
-| [`qae_grounding_alignment`](metrics/qae-grounding-alignment.md) | 问题、答案与证据是否可回溯 | `deep` |
-| [`coherence_score`](metrics/coherence-score.md) | 分段、描述、事件链是否连贯 | `standard` |
 
 ## 阅读路径
 
 1. [设计目标](design-goals.md)：确认为什么评估体系按能力而不是算子类型组织。
 2. [Pipeline 边界](pipeline-boundary.md)：区分轻量 `DataQualityAssessor` 与离线语义评估。
 3. [独立评估链路](evaluation-flow.md) 和 [资源控制](resource-control.md)：理解后续实现的执行模型。
-4.[指标定义](metrics/index.md) 与 [报告格式](report-format.md)：用于实现评估器和验收报告。
+4. [指标定义](metrics/index.md) 与 [报告格式](report-format.md)：用于实现评估器和验收报告。

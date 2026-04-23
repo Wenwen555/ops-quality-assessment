@@ -45,12 +45,14 @@ nav:
       - 资源控制: resource-control.md
   - 指标定义:
       - 指标总览: metrics/index.md
+      - 文本噪声污染: metrics/text-noise-contamination.md
+      - 文本规范化有效性: metrics/text-normalization-validity.md
+      - 文本语义保持: metrics/text-semantic-preservation.md
       - 图文语义对齐: metrics/image-text-alignment.md
       - 视频-图采样对齐: metrics/video-image-alignment.md
-      - 跨模态语义相似度: metrics/cross-modal-semantic-similarity.md
-      - 概念覆盖率: metrics/concept-coverage.md
-      - 文本语义保持: metrics/text-semantic-preservation.md
-      - 模态差距: metrics/modality-gap.md
+      - CHAIR 物体幻觉: metrics/concept-coverage.md
+      - 视觉变换一致性: metrics/visual-transform-consistency.md
+      - 视觉鲁棒性: metrics/visual-robustness.md
       - QAE 证据对齐: metrics/qae-grounding-alignment.md
       - 连贯性评分: metrics/coherence-score.md
   - 报告格式: report-format.md

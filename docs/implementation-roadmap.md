@@ -48,12 +48,14 @@ class OpsQualityAssessor:
 
 ```python
 EVALUATOR_REGISTRY = {
+    "text_noise_contamination": TextNoiseContaminationEvaluator,
+    "text_normalization_validity": TextNormalizationValidityEvaluator,
     "image_text_alignment": ImageTextAlignmentEvaluator,
     "video_image_alignment": VideoImageAlignmentEvaluator,
-    "cross_modal_semantic_similarity": CrossModalSemanticSimilarityEvaluator,
-    "concept_coverage": ConceptCoverageEvaluator,
+    "chair_object_hallucination": ChairObjectHallucinationEvaluator,
     "text_semantic_preservation": TextSemanticPreservationEvaluator,
-    "modality_gap": ModalityGapEvaluator,
+    "visual_transform_consistency": VisualTransformConsistencyEvaluator,
+    "visual_robustness": VisualRobustnessEvaluator,
     "qae_grounding_alignment": QaeGroundingAlignmentEvaluator,
     "coherence_score": CoherenceScoreEvaluator,
 }

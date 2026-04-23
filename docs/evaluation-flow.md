@@ -10,12 +10,14 @@ report = OpsQualityAssessor.evaluate(
     config=OpsQualityAssessmentConfig(
         sample_size=1000,
         enabled_metrics=[
+            "text_noise_contamination",
+            "text_normalization_validity",
             "image_text_alignment",
             "video_image_alignment",
-            "cross_modal_semantic_similarity",
-            "concept_coverage",
+            "chair_object_hallucination",
             "text_semantic_preservation",
-            "modality_gap",
+            "visual_transform_consistency",
+            "visual_robustness",
             "qae_grounding_alignment",
             "coherence_score",
         ],
