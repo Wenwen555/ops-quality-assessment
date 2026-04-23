@@ -1,8 +1,13 @@
-:root {
+body[data-md-color-scheme="default"] {
   --md-primary-fg-color: #263238;
   --md-primary-fg-color--light: #3a4a50;
   --md-primary-fg-color--dark: #172024;
   --md-accent-fg-color: #9c3f2f;
+  --md-default-bg-color: #fffdf7;
+  --md-default-fg-color: #1f2a2e;
+  --md-default-fg-color--light: #657176;
+  --md-code-bg-color: #f2ecdf;
+  --md-code-fg-color: #263238;
   --oq-paper: #fffdf7;
   --oq-paper-soft: #f8f2e6;
   --oq-ink: #1f2a2e;
@@ -14,11 +19,16 @@
   --md-code-font: "JetBrains Mono", "SFMono-Regular", "Cascadia Code", monospace;
 }
 
-[data-md-color-scheme="slate"] {
+body[data-md-color-scheme="slate"] {
   --md-primary-fg-color: #101719;
   --md-primary-fg-color--light: #1f2a2e;
   --md-primary-fg-color--dark: #0b1012;
   --md-accent-fg-color: #e0b26f;
+  --md-default-bg-color: #111719;
+  --md-default-fg-color: #efe8dc;
+  --md-default-fg-color--light: #adb7b7;
+  --md-code-bg-color: #1b2528;
+  --md-code-fg-color: #efe8dc;
   --oq-paper: #111719;
   --oq-paper-soft: #182124;
   --oq-ink: #efe8dc;
@@ -29,19 +39,7 @@
 }
 
 body {
-  background:
-    linear-gradient(90deg, rgba(156, 63, 47, 0.035) 1px, transparent 1px),
-    linear-gradient(rgba(38, 50, 56, 0.035) 1px, transparent 1px),
-    var(--oq-paper);
-  background-size: 34px 34px;
-}
-
-[data-md-color-scheme="slate"] body {
-  background:
-    linear-gradient(90deg, rgba(224, 178, 111, 0.035) 1px, transparent 1px),
-    linear-gradient(rgba(239, 232, 220, 0.025) 1px, transparent 1px),
-    var(--oq-paper);
-  background-size: 34px 34px;
+  background: var(--oq-paper);
 }
 
 .md-header,
@@ -130,7 +128,7 @@ body {
     var(--oq-paper-soft);
 }
 
-[data-md-color-scheme="slate"] .whitepaper-hero {
+body[data-md-color-scheme="slate"] .whitepaper-hero {
   background:
     linear-gradient(135deg, var(--oq-accent-soft), transparent 34%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015)),
@@ -193,7 +191,7 @@ body {
   box-shadow: 0 14px 36px rgba(31, 42, 46, 0.055);
 }
 
-[data-md-color-scheme="slate"] .doc-grid.cards > ul > li {
+body[data-md-color-scheme="slate"] .doc-grid.cards > ul > li {
   background: rgba(255, 255, 255, 0.035);
 }
 
@@ -227,7 +225,7 @@ body {
   background: rgba(255, 255, 255, 0.48);
 }
 
-[data-md-color-scheme="slate"] .md-typeset .mermaid {
+body[data-md-color-scheme="slate"] .md-typeset .mermaid {
   background: rgba(255, 255, 255, 0.035);
 }
 
