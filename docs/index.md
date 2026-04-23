@@ -65,8 +65,6 @@ flowchart TB
     D --> E[run evaluators]
     E --> F[aggregate reports]
     F --> G[ops_quality_report.md]
-    F --> H[ops_quality_report.json]
-    F --> I[low_quality_samples.jsonl]
 ```
 
 </section>
@@ -113,7 +111,7 @@ flowchart TB
 
 ## 阅读路径
 
-1. 先读 [设计目标](design-goals.md)，确认为什么评估体系按能力而不是算子类型组织。
-2. 再读 [Pipeline 边界](pipeline-boundary.md)，区分轻量 `DataQualityAssessor` 与离线语义评估。
-3. 进入 [独立评估链路](evaluation-flow.md) 和 [资源控制](resource-control.md)，理解后续实现的执行模型。
-4. 最后查看 [指标定义](metrics/index.md) 与 [报告格式](report-format.md)，用于实现评估器和验收报告。
+1. [设计目标](design-goals.md)：确认为什么评估体系按能力而不是算子类型组织。
+2. [Pipeline 边界](pipeline-boundary.md)：区分轻量 `DataQualityAssessor` 与离线语义评估。
+3. [独立评估链路](evaluation-flow.md) 和 [资源控制](resource-control.md)：理解后续实现的执行模型。
+4.[指标定义](metrics/index.md) 与 [报告格式](report-format.md)：用于实现评估器和验收报告。
