@@ -211,6 +211,36 @@ body[data-md-color-scheme="slate"] .doc-grid.cards > ul > li {
   font-weight: 800;
 }
 
+.flow-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.flow-panel {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--oq-rule);
+  border-radius: 0.35rem;
+  background: rgba(255, 255, 255, 0.42);
+}
+
+body[data-md-color-scheme="slate"] .flow-panel {
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.flow-panel h3 {
+  margin-top: 0;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid var(--oq-rule);
+  font-size: 0.92rem;
+}
+
+.flow-panel .mermaid {
+  min-height: 20rem;
+}
+
 .highlight span.filename {
   border-bottom: 1px solid var(--oq-rule);
   background: var(--oq-paper-soft);
@@ -231,6 +261,10 @@ body[data-md-color-scheme="slate"] .md-typeset .mermaid {
 
 @media screen and (max-width: 76.2344em) {
   .doc-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .flow-grid {
     grid-template-columns: 1fr;
   }
 }

@@ -37,33 +37,70 @@
 
 ## 评估链路总览
 
-```mermaid
-flowchart LR
-    subgraph P[Data Processing Pipeline]
-        A[loading] --> B[cleaning / augmentation]
-        B --> C[generation / video ops]
-        C --> D[saving]
-    end
+<div class="flow-grid" markdown>
 
+<section class="flow-panel" markdown>
+### 数据生产链路
+
+```mermaid
+flowchart TB
+    A[loading] --> B[cleaning / augmentation]
+    B --> C[generation / video ops]
+    C --> D[saving]
     D --> E[(dataset snapshot)]
     D --> F[(artifacts)]
     D --> G[(optional manifest)]
-
-    subgraph Q[Ops Quality Assessor]
-        H[load input] --> I[inspect schema]
-        I --> J[plan metrics]
-        J --> K[sample records]
-        K --> L[run evaluators]
-        L --> M[aggregate reports]
-    end
-
-    E --> H
-    F --> H
-    G --> H
-    M --> N[ops_quality_report.md]
-    M --> O[ops_quality_report.json]
-    M --> R[low_quality_samples.jsonl]
 ```
+
+</section>
+
+<section class="flow-panel" markdown>
+### 离线评估链路
+
+```mermaid
+flowchart TB
+    A[load input] --> B[inspect schema]
+    B --> C[plan metrics]
+    C --> D[sample records]
+    D --> E[run evaluators]
+    E --> F[aggregate reports]
+    F --> G[ops_quality_report.md]
+    F --> H[ops_quality_report.json]
+    F --> I[low_quality_samples.jsonl]
+```
+
+</section>
+
+</div>
+
+??? info "展开完整端到端链路"
+    ```mermaid
+    flowchart LR
+        subgraph P[Data Processing Pipeline]
+            A[loading] --> B[cleaning / augmentation]
+            B --> C[generation / video ops]
+            C --> D[saving]
+        end
+
+        D --> E[(dataset snapshot)]
+        D --> F[(artifacts)]
+        D --> G[(optional manifest)]
+
+        subgraph Q[Ops Quality Assessor]
+            H[load input] --> I[inspect schema]
+            I --> J[plan metrics]
+            J --> K[sample records]
+            K --> L[run evaluators]
+            L --> M[aggregate reports]
+        end
+
+        E --> H
+        F --> H
+        G --> H
+        M --> N[ops_quality_report.md]
+        M --> O[ops_quality_report.json]
+        M --> R[low_quality_samples.jsonl]
+    ```
 
 ## 必测指标
 
