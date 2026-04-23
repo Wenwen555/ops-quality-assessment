@@ -32,28 +32,35 @@
 
 | 指标 | 推荐模型/工具 | 输出指标 |
 | --- | --- | --- |
-| [`text_noise_contamination`](text-noise-contamination.md) | regex, n-gram stats, tokenizer, blocklist | repetition rate, special char hit rate, blocklist hit rate |
-| [`text_normalization_validity`](text-normalization-validity.md) | regex rules, pattern inventory, before-after diff | normalization success rate, residual pattern rate |
-| [`image_text_alignment`](image-text-alignment.md) | CLIP, BLIP ITM | CLIPScore, ITM score, hard negative margin |
-| [`video_image_alignment`](video-image-alignment.md) | CLIP, Cosmos-Embed1 | segment-frame alignment, frame representativeness |
-| [`chair_object_hallucination`](concept-coverage.md) | COCO object labels, synonym mapping, optional detector | `CHAIRi`, `CHAIRs`, object mention precision |
-| [`text_semantic_preservation`](text-semantic-preservation.md) | BGE, Sentence-BERT, BERTScore, NLI | preservation score, contradiction rate |
-| [`visual_transform_consistency`](visual-transform-consistency.md) | CLIP/DINO, detector, SSIM/LPIPS, edge stats | transform success, object retention, edge density validity |
-| [`visual_robustness`](visual-robustness.md) | CLIP/DINO, SSIM/LPIPS/DISTS, image statistics | embedding drift, perceptual distance, degradation rate |
-| [`qae_grounding_alignment`](qae-grounding-alignment.md) | rules, BGE, NLI, VLM/LLM judge | answer support rate, evidence hit rate |
-| [`coherence_score`](coherence-score.md) | BGE, duplicate detection, event coverage rules | duplicate rate, template reuse rate, event coverage |
+| [`text_noise_contamination`](text-noise-contamination.md) | regex, n-gram stats, blocklist | n-gram repetition, blocklist hit rate |
+| [`text_normalization_validity`](text-normalization-validity.md) | regex rules, pattern inventory, before-after diff | residual pattern rate, invalid value rate |
+| [`image_text_alignment`](image-text-alignment.md) | CLIP | CLIPScore mean, low alignment rate |
+| [`video_image_alignment`](video-image-alignment.md) | Cosmos-Embed1, OpenCV timestamp reader | segment-frame alignment, temporal coverage |
+| [`chair_object_hallucination`](concept-coverage.md) | COCO object labels, synonym mapping, tokenizer | `CHAIRi`, `CHAIRs` |
+| [`text_semantic_preservation`](text-semantic-preservation.md) | BGE-M3 | preservation score, semantic drift rate |
+| [`visual_transform_consistency`](visual-transform-consistency.md) | CLIP | transform success, semantic similarity |
+| [`visual_robustness`](visual-robustness.md) | CLIP, SSIM | embedding drift, structural similarity |
+| [`qae_grounding_alignment`](qae-grounding-alignment.md) | evidence ref resolver, BGE-M3 | answer support rate, evidence hit rate |
+| [`coherence_score`](coherence-score.md) | BGE-M3 | coherence score, duplicate description rate |
 
 ## 模型与工具清单
 
 | 模型/工具 | 用途 |
-| --- | --- | 
-| `openai/clip-vit-base-patch32` | 图文相似度、帧文本相似度、视频采样帧 embedding |
-| BLIP / BLIP ITM | 图文匹配、caption 质量辅助评估 |
+| --- | --- |
+| regex / pattern inventory / before-after diff | 文本噪声检测、规范化残留检测和非法规范化值检测 |
+| `openai/clip-vit-base-patch32` | 通用视觉/图文 embedding：图文对齐、视觉变换相似度、视觉 embedding drift |
 | `nvidia/Cosmos-Embed1-224p` | 视频片段语义 embedding、视频-图对齐 |
-| BGE-M3 / Sentence-BERT | 文本语义保持、文本证据相似度 |
-| BERTScore / ROUGE / BLEU | 文本生成和文本改写相似度 |
-| NLI 模型 | 文本前后矛盾检测、答案证据支持判断 |
-| regex / tokenizer / blocklist | 文本噪声和规范化有效性评估 |
-| DINO / SSIM / LPIPS | 视觉变换一致性评估 |
-| GroundingDINO / DETR / YOLO | object retention 和 CHAIR detector-based 扩展 |
-| VLM/LLM judge | QAE grounding、复杂视频问答一致性判断 |
+| OpenCV frame extraction / timestamp reader | 视频采样帧读取和 temporal coverage 计算 |
+| BGE-M3 | 通用文本 embedding：文本语义保持、QAE answer-evidence 支持、描述重复检测 |
+| SSIM | 图像处理前后的结构相似度计算 |
+
+## 可选扩展模型与工具
+
+| 模型/工具 | 扩展用途 |
+| --- | --- |
+| BLIP / BLIP ITM | 扩展 `image_text_alignment` 的图文匹配概率。 |
+| NLI 模型 | 扩展文本矛盾检测、事件链覆盖判断和 QAE evidence 支持判断。 |
+| LPIPS / DISTS | 扩展 `visual_robustness` 的感知距离评估。 |
+| GroundingDINO / DETR / YOLO | 扩展 object retention 和 detector-based CHAIR。 |
+| VLM/LLM judge | 扩展复杂多模态 QAE grounding 判断。 |
+| hard negative retrieval | 扩展图文对齐的正负样本区分度评估。 |

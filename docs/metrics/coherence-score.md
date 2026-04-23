@@ -21,8 +21,7 @@
 
 ## 推荐模型
 
-- Sentence-BERT / BGE
-- duplicate description detection
+- BGE-M3
 
 ## 实现逻辑
 

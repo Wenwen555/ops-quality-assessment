@@ -20,14 +20,14 @@
 
 ## 推荐模型与工具
 
-- CLIP / DINO image embedding
+- `openai/clip-vit-base-patch32`
 - SSIM
 
 ## 实现逻辑
 
 ```text
 1. 为处理前图像和处理后图像构建 paired samples。
-2. 使用 CLIP / DINO 编码处理前后图像，计算 embedding drift，并聚合为 `embedding_drift_mean`。
+2. 使用 CLIP 编码处理前后图像，计算 embedding drift，并聚合为 `embedding_drift_mean`。
 3. 使用 SSIM 计算处理前后图像结构相似度，并聚合为 `structural_similarity_mean`。
 4. 按算子类型聚合上述分数，输出数据集级视觉稳定性结果。
 ```

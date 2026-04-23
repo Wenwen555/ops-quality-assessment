@@ -25,17 +25,14 @@
 
 ## 推荐模型
 
-- BGE-M3 或 Sentence-BERT：计算 before / after 的语义相似度，用于 `semantic_preservation_score` 和 `semantic_drift_rate`
-- BERTScore：作为 token-level 语义对齐补充，可并入 `semantic_preservation_score`
-- NLI contradiction model：可选扩展；后续用于检测 before / after 是否存在语义矛盾
+- BGE-M3：通用文本 embedding 模型，用于计算 before / after 的语义相似度，并输出 `semantic_preservation_score` 和 `semantic_drift_rate`
 
 ## 实现逻辑
 
 ```text
 1. 读取 before_text_key 和 after_text_key。
 2. 使用 embedding cosine similarity 计算每个样本的 `semantic_preservation_score`。
-3. 可选结合 BERTScore F1，对语义保持分数进行补充校准。
-4. 根据语义保持分数阈值识别明显语义漂移样本，并计算 `semantic_drift_rate`。
+3. 根据语义保持分数阈值识别明显语义漂移样本，并计算 `semantic_drift_rate`。
 ```
 
 ## 输出指标

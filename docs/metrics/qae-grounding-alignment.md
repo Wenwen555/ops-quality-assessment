@@ -22,14 +22,14 @@
 
 ## 推荐模型
 
-- BGE / Sentence-BERT
+- BGE-M3
 
 ## 实现逻辑
 
 ```text
 1. 根据 evidence_refs 回溯 scaffold_units、description_units、text_signals、temporal_structures、samples。
 2. 判断每个 QAE triplet 是否能解析到可用 evidence，计算 `evidence_hit_rate`。
-3. 使用 BGE / Sentence-BERT 计算 answer 与 evidence text 的语义相似度。
+3. 使用 BGE-M3 计算 answer 与 evidence text 的语义相似度。
 4. 根据相似度阈值判断 answer 是否被 evidence 支持，计算 `answer_support_rate`。
 ```
 

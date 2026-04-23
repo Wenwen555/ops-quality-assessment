@@ -21,7 +21,6 @@
 ## 推荐模型
 
 - `openai/clip-vit-base-patch32`
-- CLIPScore
 
 ## 实现逻辑
 

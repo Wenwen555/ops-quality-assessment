@@ -24,15 +24,14 @@
 
 ## 推荐模型与工具
 
-- CLIP / DINO image embedding
-- image decoder / file existence checker
+- `openai/clip-vit-base-patch32`
 
 ## 实现逻辑
 
 ```text
 1. 为原图和变换图构建配对样本。
 2. 检查变换产物是否存在且可解码，计算 `transform_output_success_rate`。
-3. 使用 CLIP / DINO 分别编码原图和变换图，计算变换前后的 embedding similarity。
+3. 使用 CLIP 分别编码原图和变换图，计算变换前后的 embedding similarity。
 4. 聚合所有有效 pair 的相似度，输出 `semantic_similarity_before_after`。
 ```
 
