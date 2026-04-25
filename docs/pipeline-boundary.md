@@ -1,8 +1,8 @@
 # Pipeline 边界
 
-## 当前轻量监控链路
+## 当前基础质量链路
 
-AscendDataForge 当前已有 `QualityPlugin`，可以在 pipeline 每个算子执行后调用 `DataQualityAssessor`：
+AscendDataForge 已有 `QualityPlugin`，可以在 pipeline 每个算子执行后调用 `DataQualityAssessor`：
 
 ```text
 MultimodalPipeline.run() 每轮 operation.execute() 后
@@ -19,59 +19,40 @@ MultimodalPipeline.run() 每轮 operation.execute() 后
 - 文本长度统计。
 - 空值率和基础异常值。
 
-## 为什么重模型评估不插入主 pipeline
+## OpsQualityPlugin 边界
 
-本评估规划包含 CLIP、BLIP、Cosmos-Embed、VLM/LLM judge、概念抽取、视频片段证据回溯等重模型评估。如果把它们插入主数据处理 pipeline，会带来明显耦合：
+`OpsQualityPlugin` 使用相同的插件机制，但面向语义层、跨模态层和证据层的算子产物评估。它可以读取：
 
-- 数据生产链路必须感知评估指标和模型配置。
-- 重模型推理会拖慢数据处理吞吐。
-- 某个评估模型失败可能阻断本应成功的数据处理任务。
-- 采样策略、模型版本、报告格式变化频繁，不适合绑定主链路。
+- 每个算子后的 `output_ds`，用于评估当前产物质量。
+- `input_ds` 和 `output_ds`，用于构造 before/after 型临时评估 rows。
+
+插件只记录报告，不修改或替换 `MultimodalDataset`，因此不会把评估字段写回后续数据流。
 
 ## 推荐边界
 
 ```mermaid
 flowchart TB
-    A[Main pipeline] --> B[final dataset]
-    A --> C[artifact dirs]
-    A --> D[optional manifest]
+    A[MultimodalPipeline] --> B[initial dataset]
+    B --> C[operation.execute]
+    C --> D[output dataset]
+    D --> E[next operation]
 
-    B --> E[Offline quality assessment]
-    C --> E
-    D --> E
+    B -.input_ds.-> P[OpsQualityPlugin]
+    D -.output_ds.-> P
+    P --> Q[OpsQualityAssessor]
+    Q --> R[(staged reports)]
 
-    E --> F[Markdown report]
-    E --> G[JSON report]
-    E --> H[Low-quality sample list]
-
-    I[QualityPlugin + DataQualityAssessor] -.lightweight after_operation.-> A
+    D --> S[QualityPlugin + DataQualityAssessor]
+    S --> T[(basic quality report)]
 ```
 
-主 pipeline 只负责生成数据与通用产物元信息，不感知具体评估指标。评估链路独立启动、独立配置、独立产出报告。
+主 pipeline 仍然只负责数据处理。两个 quality plugin 都是旁路观察者：
 
-## Manifest 边界
+- `QualityPlugin` 负责基础字段质量。
+- `OpsQualityPlugin` 负责多模态算子产物质量。
 
-主 pipeline 可以选择性生成通用 manifest，但 manifest 不包含任何具体评估指标逻辑。
+## 数据流约束
 
-```json
-{
-  "dataset_uri": "/path/to/final_dataset",
-  "format": "jsonl",
-  "modalities": ["image", "video", "text"],
-  "schema_fields": [
-    "image_path",
-    "caption",
-    "video_path",
-    "segments",
-    "samples",
-    "description_units",
-    "text_signals",
-    "temporal_structures",
-    "qae_triplets"
-  ],
-  "artifact_dirs": {
-    "sample_frames": "/path/to/sample_frames"
-  },
-  "tracking_uri": "/path/to/tracking_report.json"
-}
-```
+- 插件不得改变 `operation.execute()` 的返回数据。
+- 插件评估失败只记录 `warning` 日志，不阻断 pipeline。
+- before/after 型 metric 在插件内部构造临时评估 rows，例如 `before_text=input_ds.text`、`after_text=output_ds.text`，不写回后续数据流。

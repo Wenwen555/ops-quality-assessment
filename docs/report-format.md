@@ -1,6 +1,6 @@
 # 报告格式
 
-评估链路默认输出产物：Markdown 报告、JSON 报告。
+评估链路默认先在 `OpsQualityPlugin` 中保存分阶段内存报告；需要落盘时可再导出 Markdown 报告和 JSON 报告。
 
 ## Markdown 报告
 
@@ -34,7 +34,9 @@ ops_quality_report.json
 ```json
 {
   "assessed_at": "2026-04-22T00:00:00",
-  "dataset_uri": "/path/to/dataset",
+  "stage": "after_operation",
+  "operation_name": "image_captioning",
+  "op_index": 2,
   "sample_size": 1000,
   "metrics": {
     "image_text_alignment": {
@@ -62,4 +64,3 @@ ops_quality_report.json
 | --- | --- |
 | `ops_quality_report.md` | 快速判断整体质量和高风险指标。 |
 | `ops_quality_report.json`  | 触发质量门控、趋势追踪、看板展示。 |
-

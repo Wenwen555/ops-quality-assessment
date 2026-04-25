@@ -36,7 +36,7 @@
 | [`text_normalization_validity`](text-normalization-validity.md) | regex rules, pattern inventory, before-after diff | residual pattern rate, invalid value rate |
 | [`image_text_alignment`](image-text-alignment.md) | CLIP | CLIPScore mean, low alignment rate |
 | [`video_image_alignment`](video-image-alignment.md) | Cosmos-Embed1, OpenCV timestamp reader | segment-frame alignment, temporal coverage |
-| [`chair_object_hallucination`](concept-coverage.md) | COCO object labels, synonym mapping, tokenizer | `CHAIRi`, `CHAIRs` |
+| [`chair_object_hallucination`](concept-coverage.md) | subject segmentation, visual recognition, BGE-M3 | subject mention/mismatch rate |
 | [`text_semantic_preservation`](text-semantic-preservation.md) | BGE-M3 | preservation score, semantic drift rate |
 | [`visual_transform_consistency`](visual-transform-consistency.md) | CLIP | transform success, semantic similarity |
 | [`visual_robustness`](visual-robustness.md) | CLIP, SSIM | embedding drift, structural similarity |

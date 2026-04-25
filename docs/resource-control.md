@@ -1,6 +1,6 @@
 # 资源控制
 
-独立评估不会天然过重，关键在于默认执行策略必须保守。资源控制的目标是让评估结果可复现、可预算、不会反向拖垮数据生产链路。
+插入式评估默认跟随 pipeline 生命周期触发，因此执行策略必须保守。资源控制的目标是让评估结果可复现、可预算、不会反向拖垮数据生产链路。
 
 ## 默认采样
 
@@ -58,4 +58,4 @@ reuse_cache: true
 | `standard` | CLIP、BGE、概念抽取、低分样本 | 日常质量评估 |
 | `deep` | Cosmos-Embed、NLI、GroundingDINO、VLM/LLM judge | 发布前审计、疑难样本复核 |
 
-默认使用 `standard`，CI 使用 `basic`。
+插入式运行默认使用 `basic` 或轻量 `standard`；发布前审计再启用 `deep`。

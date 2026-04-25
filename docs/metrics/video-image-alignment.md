@@ -26,7 +26,7 @@
 
 ```text
 1. 按 segment_id 聚合 samples，并读取每个 segment 的 timestamp_range。
-2. 使用同一个 video-image embedding 模型编码视频片段和对应采样帧。
+2. 优先读取 `segments[].embedding` 和 `samples[].embedding`；缺失时用同一个 video-image embedding 模型从 `semantic_embeddings`、采样帧路径或视频时间戳补算。
 3. 对同一 segment 内的采样帧 embedding 做 mean pooling。
 4. 计算 segment video embedding 与 pooled frame embedding 的 cosine similarity，并聚合为 `segment_frame_alignment_mean`。
 5. 根据采样帧 timestamp 是否覆盖对应 segment 的有效时间范围，计算 `temporal_coverage_rate`。
@@ -50,5 +50,5 @@
 | 条件 | 状态 |
 | --- | --- |
 | 无 `video_path` 或 `segments` | `failed_precondition` |
-| segment 无采样帧 | `partial_failure` |
+| segment 无采样帧 | `warning` |
 | 数据集不包含视频模态 | `not_applicable` |

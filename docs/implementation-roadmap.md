@@ -1,79 +1,105 @@
 # 实现路线
 
-本网站只建设技术文档，不实现运行时代码。后续代码实现建议放在 AscendDataForge 的 `quality/ops-quality-assessor/` 模块下。
+`OpsQualityAssessor` 当前作为 `OpsQualityPlugin` 的内部评估器使用。本页记录插入式实现路线和当前边界。
 
-## 建议模块
+## 模块位置
 
 ```text
-quality/ops-quality-assessor/
-  MULTIMODAL_EVALUATION_REPORT.md
-  assessor.py
-  config.py
-  metrics.py
-  evaluators.py
-  model_backends.py
-  sampling.py
-  report_writer.py
+multimodal_data_processor/
+  core/
+    pipeline_plugin.py          # OpsQualityPlugin
+  quality/
+    ops_quality_assessor/
+      __init__.py
+      assessor.py
+      base.py
+      config.py
+      context.py
+      results.py
+      metrics/
+        __init__.py
+        *.py
 ```
 
-| 模块 | 职责 |
+| 文件 | 职责 |
 | --- | --- |
-| `assessor.py` | 统一入口 `OpsQualityAssessor.evaluate(...)`。 |
-| `config.py` | 配置模型 `OpsQualityAssessmentConfig`。 |
-| `metrics.py` | 评估结果数据结构。 |
-| `evaluators.py` | 各指标 evaluator。 |
-| `model_backends.py` | CLIP、BLIP、BGE、VLM/LLM 等模型封装和缓存。 |
-| `sampling.py` | 采样和分层采样逻辑。 |
-| `report_writer.py` | Markdown、JSON、JSONL 输出。 |
+| `core/pipeline_plugin.py` | `OpsQualityPlugin`，在 `before_operation` / `after_operation` 中触发评估并记录报告。 |
+| `assessor.py` | `OpsQualityAssessor.evaluate(dataset)`，串联 context 构建、metric 实例化和结果聚合。 |
+| `config.py` | `OpsQualityAssessmentConfig`，定义 `sample_size`、`enabled_metrics`、`executed_operations` 和 `metric_configs`。 |
+| `context.py` | 从当前 `MultimodalDataset` 快照抽取采样行、schema 字段和逐字段数据视图。 |
+| `base.py` | `BaseMetricAssessor`、`ScoreSpec`、统一异常包装逻辑，以及 metric 配置解析。 |
+| `results.py` | `MetricResult` 和 `OpsQualityAssessmentResult` 两个内存结果模型。 |
+| `metrics/` | 各指标的独立实现。 |
 
-## 建议接口
+不再维护独立的 metric 注册入口。`OpsQualityAssessor` 直接持有默认 metric assessor 类型列表，也允许调用方传入自定义 assessor 实例或类型。
 
-```python
-class OpsQualityAssessor:
-    def __init__(self, config: OpsQualityAssessmentConfig):
-        self.config = config
-
-    def evaluate(self, dataset_or_path) -> OpsQualityReport:
-        dataset = self._load_dataset(dataset_or_path)
-        schema = self._inspect_schema(dataset)
-        plan = self._build_metric_plan(schema)
-        sample = self._sample(dataset, plan)
-        results = self._run_evaluators(sample, plan)
-        return self._write_report(results)
-```
-
-## Evaluator Registry
-
-内部 evaluator registry 独立于主 `OperationRegistry`，只在评估模块内部使用。
+## 插件入口
 
 ```python
-EVALUATOR_REGISTRY = {
-    "text_noise_contamination": TextNoiseContaminationEvaluator,
-    "text_normalization_validity": TextNormalizationValidityEvaluator,
-    "image_text_alignment": ImageTextAlignmentEvaluator,
-    "video_image_alignment": VideoImageAlignmentEvaluator,
-    "chair_object_hallucination": ChairObjectHallucinationEvaluator,
-    "text_semantic_preservation": TextSemanticPreservationEvaluator,
-    "visual_transform_consistency": VisualTransformConsistencyEvaluator,
-    "visual_robustness": VisualRobustnessEvaluator,
-    "qae_grounding_alignment": QaeGroundingAlignmentEvaluator,
-    "coherence_score": CoherenceScoreEvaluator,
-}
+from multimodal_data_processor.core.pipeline import MultimodalPipeline
+from multimodal_data_processor.core.pipeline_plugin import OpsQualityPlugin
+from multimodal_data_processor.quality.ops_quality_assessor import OpsQualityAssessmentConfig
+
+ops_quality_plugin = OpsQualityPlugin(
+    quality_config=OpsQualityAssessmentConfig(
+        sample_size=1000,
+        enabled_metrics=["image_text_alignment", "text_noise_contamination"],
+    ),
+    assess_after_operations=True,
+)
+
+pipeline = MultimodalPipeline(plugins=[ops_quality_plugin])
+result_dataset = pipeline.run(dataset)
+reports = ops_quality_plugin.get_reports()
 ```
 
-## 验收标准
+## 执行路线
 
-### 文档验收
+```mermaid
+sequenceDiagram
+    participant Pipeline as MultimodalPipeline
+    participant Plugin as OpsQualityPlugin
+    participant Assessor as OpsQualityAssessor
+    participant Builder as EvaluationContextBuilder
+    participant Metric as MetricAssessor
 
-- 报告明确说明主 pipeline 不触发具体语义评估任务。
-- 报告解释独立评估的资源控制策略，说明默认采样、缓存和分级评估。
-- 报告按评估指标组织，而不是按文本、图像、视频算子章节组织。
-- 报告包含每个指标的输入字段、推荐模型、关联上游产物和输出分数。
+    Pipeline->>Plugin: after_operation(input_ds, output_ds)
+    Plugin->>Plugin: build assessment rows
+    Plugin->>Assessor: evaluate_rows(output_ds, assessment_rows)
+    Assessor->>Builder: build_from_rows(output_ds, assessment_rows)
+    Builder-->>Assessor: EvaluationContext
+    Assessor->>Metric: assess(context)
+    Metric-->>Assessor: MetricResult
+    Assessor-->>Plugin: staged report
+```
 
-### 后续实现验收
+| 步骤 | 行为 |
+| --- | --- |
+| 1 | `OpsQualityPlugin.on_pipeline_init()` 构造 `OpsQualityAssessor`。 |
+| 2 | 每次 `after_operation()` 接收当前算子的 `input_ds` 和 `output_ds`。 |
+| 3 | 插件以 `output_ds` 样本行为基础构造临时评估 rows，并添加 `before_text=input_ds.text`、`after_text=output_ds.text`。 |
+| 4 | `OpsQualityAssessor.evaluate_rows(output_ds, assessment_rows)` 创建 `EvaluationContextBuilder(self.config)` 并调用 `build_from_rows(...)`。 |
+| 5 | `build()` 执行 `dataset.dataset.limit(sample_size).take_all()`，把采样行拉回内存。 |
+| 6 | `build()` 读取 schema 并构造 `data[field_name] -> list[Any]` 的列视图。 |
+| 7 | `evaluate()` 遍历 `config.enabled_metrics`，从内部 assessor 映射中取出对应 metric。 |
+| 8 | 每个 metric 统一走 `BaseMetricAssessor.assess(context)`，把缺字段和异常转换成结构化状态。 |
+| 9 | 插件把 `stage`、`operation_name`、`op_index`、`duration_sec` 和 `OpsQualityAssessmentResult` 保存到内存报告列表。 |
 
-- `OpsQualityAssessor.evaluate(dataset_or_path, config)` 可以接收 `MultimodalDataset` 或数据路径。
-- 字段缺失时指标输出 `not_applicable` 或 `failed_precondition`，不导致整体崩溃。
-- 必测项 `image_text_alignment` 和 `video_image_alignment` 可独立运行。
-- 评估报告包含 Markdown、JSON 和低质样本 JSONL。
-- 评估不依赖主数据处理 pipeline 的中间 hook。
+## 当前实现边界
+
+| 能力点 | 当前状态 |
+| --- | --- |
+| 接入方式 | `OpsQualityPlugin` 插入 pipeline 生命周期。 |
+| 数据流影响 | 插件不修改、不替换 `MultimodalDataset`。 |
+| 输入支持 | `OpsQualityAssessor.evaluate(...)` 接受当前 `MultimodalDataset` 快照。 |
+| 每步评估 | 插件可在每个 operation 后评估临时 `assessment_rows`。 |
+| 采样方式 | 当前使用 `limit(sample_size)`，属于顺序截断。 |
+| metric planning | 当前直接遍历 `enabled_metrics`，由各 metric 自行返回 `not_applicable` / `failed_precondition`。 |
+| 模型后端 | 当前优先使用已有 score/embedding；缺 embedding 时尝试用配置的模型后端补算，仍无法计算时跳过对应 score 或返回 `failed_precondition`。 |
+| 输出落盘 | 当前插件保存内存报告，后续可扩展 writer。 |
+
+## 行为基线
+
+- 算子后产物可用于 QAE、视频结构、视觉变换等产物指标。
+- before/after 型指标使用插件临时构造的 `before_text` / `after_text` 字段，不写回后续数据流。
+- 评估失败只产生 warning 日志，不阻断 pipeline。

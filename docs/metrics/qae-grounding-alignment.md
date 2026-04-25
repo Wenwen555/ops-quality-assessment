@@ -53,4 +53,4 @@
 | --- | --- |
 | 缺少 `qae_triplets` | `not_applicable` |
 | 存在 triplet 但缺少 `evidence_refs` | `failed_precondition` |
-| 证据引用无法解析 | `partial_failure` |
+| 证据引用无法解析 | `warning` |

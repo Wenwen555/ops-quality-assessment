@@ -6,12 +6,18 @@
 
 ## 输入字段
 
-- `source_text`
-- `text`
-- `normalized_text`
-- `cleaned_text`
-- `chunks`
-- 可配置 `before_text_key`、`after_text_key`
+- `before_text`
+- `after_text`
+- 可配置 `before_text_key`、`after_text_key` 覆盖默认字段名。
+
+在插入式评估中，`OpsQualityPlugin` 会在 `after_operation` 阶段构造临时评估 rows：
+
+```text
+input_ds.text  -> before_text
+output_ds.text -> after_text
+```
+
+这些字段只进入评估视图，不写回后续 pipeline 数据流。
 
 ## 上游产物
 
@@ -30,7 +36,7 @@
 ## 实现逻辑
 
 ```text
-1. 读取 before_text_key 和 after_text_key。
+1. 读取 before_text_key 和 after_text_key，默认分别为 before_text / after_text。
 2. 使用 embedding cosine similarity 计算每个样本的 `semantic_preservation_score`。
 3. 根据语义保持分数阈值识别明显语义漂移样本，并计算 `semantic_drift_rate`。
 ```
