@@ -1257,11 +1257,12 @@
         <article class="chart-card">
           <span class="card-kicker">text-image-alignment-trend.csv</span>
           <h3>文本-图像对齐趋势</h3>
-          <p>该图对应第三层“跨模态关系”：文本清理阶段保持 1.000，说明清理算子未破坏图文关系；语义遮罩会削弱关键实体线索，而本地 CLIP 复核显示水平翻转和黑白 Canny 边缘图对方向无关 caption 的图文语义只造成轻微变化。</p>
+          <p>该图对应第三层“跨模态关系”：趋势在 Messi 样例图上按当前 image 与当前 caption/text 的 embedding cosine 重跑。水平翻转的 before 是 mask 产物，Canny 的 before 是 masked + flipped 图像；Canny after 使用同一当前 caption 与 Canny 后图像重新计算 cosine。</p>
           <div class="metric-list">
-            <div class="metric-row"><span>input / text ops</span><span class="metric-value">1.000</span></div>
-            <div class="metric-row"><span>semantic_keyword_mask</span><span class="metric-value">0.700</span></div>
-            <div class="metric-row"><span>image_random_flip / image_canny</span><span class="metric-value">0.978 / 0.971</span></div>
+            <div class="metric-row"><span>input / first text ops</span><span class="metric-value">0.627</span></div>
+            <div class="metric-row"><span>remove_stopwords / mask</span><span class="metric-value">0.600 / 0.580</span></div>
+            <div class="metric-row"><span>flip before / after · ratio</span><span class="metric-value">0.580 / 0.578 · 0.998</span></div>
+            <div class="metric-row"><span>canny before / after · ratio</span><span class="metric-value">0.578 / 0.594 · 1.027</span></div>
           </div>
           <div class="chart-canvas" role="img" aria-label="文本图像对齐趋势折线图">
             <svg class="line-chart" viewBox="0 0 640 260" aria-hidden="true">
@@ -1272,14 +1273,14 @@
               <line class="grid" x1="42" y1="190" x2="600" y2="190"></line>
               <line class="axis" x1="42" y1="30" x2="42" y2="190"></line>
               <line class="axis" x1="42" y1="190" x2="600" y2="190"></line>
-              <polyline class="trend" points="42,30 135,30 228,30 321,30 414,78 507,34 600,35"></polyline>
-              <circle class="point baseline-point" cx="42" cy="30" r="5"></circle>
-              <circle class="point" cx="135" cy="30" r="5"></circle>
-              <circle class="point" cx="228" cy="30" r="5"></circle>
-              <circle class="point" cx="321" cy="30" r="5"></circle>
-              <circle class="point" cx="414" cy="78" r="5"></circle>
-              <circle class="point" cx="507" cy="34" r="5"></circle>
-              <circle class="point" cx="600" cy="35" r="5"></circle>
+              <polyline class="trend" points="42,90 135,90 228,90 321,94 414,97 507,98 600,95"></polyline>
+              <circle class="point baseline-point" cx="42" cy="90" r="5"></circle>
+              <circle class="point" cx="135" cy="90" r="5"></circle>
+              <circle class="point" cx="228" cy="90" r="5"></circle>
+              <circle class="point" cx="321" cy="94" r="5"></circle>
+              <circle class="point" cx="414" cy="97" r="5"></circle>
+              <circle class="point" cx="507" cy="98" r="5"></circle>
+              <circle class="point" cx="600" cy="95" r="5"></circle>
               <text x="32" y="33" text-anchor="end">1.0</text>
               <text x="32" y="113" text-anchor="end">0.5</text>
               <text x="32" y="193" text-anchor="end">0.0</text>
@@ -1288,10 +1289,10 @@
               <text x="414" y="214" text-anchor="middle">mask</text>
               <text x="507" y="214" text-anchor="middle">flip</text>
               <text x="600" y="214" text-anchor="middle">canny</text>
-              <text x="42" y="22" text-anchor="middle">1.000</text>
-              <text x="414" y="70" text-anchor="middle">0.700</text>
-              <text x="507" y="26" text-anchor="middle">0.978</text>
-              <text x="600" y="27" text-anchor="middle">0.971</text>
+              <text x="42" y="82" text-anchor="middle">0.627</text>
+              <text x="414" y="89" text-anchor="middle">0.580</text>
+              <text x="507" y="90" text-anchor="middle">0.578</text>
+              <text x="600" y="87" text-anchor="middle">0.594</text>
             </svg>
           </div>
         </article>
@@ -1535,16 +1536,18 @@
           <div class="media-grid">
             <figure>
               <img src="ops_quality_dashboard_assets/messi_source.jpg" alt="足球运动员增强前样例">
-              <figcaption>增强前</figcaption>
+              <figcaption>增强前 · image-text 0.627</figcaption>
             </figure>
             <figure>
               <img src="ops_quality_dashboard_assets/messi_flip_horizontal.jpg" alt="足球运动员水平翻转样例">
-              <figcaption>水平翻转后</figcaption>
+              <figcaption>水平翻转后 · image-text 0.627</figcaption>
             </figure>
           </div>
           <div class="metric-list">
-            <div class="metric-row"><span>transform.semantic_similarity_before_after</span><span class="metric-value">0.976</span></div>
-            <div class="metric-row"><span>robustness.embedding_drift_mean</span><span class="metric-value">0.024</span></div>
+            <div class="metric-row"><span>image_text.raw_messi / flipped_messi</span><span class="metric-value">0.627 / 0.627</span></div>
+            <div class="metric-row"><span>image_text.delta_after_before</span><span class="metric-value">-0.001</span></div>
+            <div class="metric-row"><span>transform.semantic_similarity_before_after</span><span class="metric-value">0.994</span></div>
+            <div class="metric-row"><span>robustness.embedding_drift_mean</span><span class="metric-value">0.006</span></div>
             <div class="metric-row"><span>robustness.structural_similarity_mean</span><span class="metric-value">0.240</span></div>
           </div>
         </article>
