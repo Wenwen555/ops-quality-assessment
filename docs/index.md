@@ -37,22 +37,47 @@
 
 ```mermaid
 flowchart TB
-    A[MultimodalDataset] --> P[MultimodalPipeline]
-    P -- 可拓展 --> I[initial_dataset assessment]
-    P --> O1[operation 1]
-    O1 --> Q1[after_operation report]
-    O1 --> O2[operation 2]
-    O2 --> Q2[after_operation report]
-    O2 --> F[final dataset]
+    %% 样式定义，提升图表的专业度与区分度
+    classDef dataNode fill:#e3f2fd,stroke:#1e88e5,stroke-width:2px;
+    classDef opNode fill:#fff8e1,stroke:#ffb300,stroke-width:2px;
+    classDef pluginNode fill:#f3e5f5,stroke:#8e24aa,stroke-width:2px;
+    classDef dbNode fill:#e8f5e9,stroke:#43a047,stroke-width:2px;
 
-    I --> R[(in-memory reports)]
-    Q1 --> R
-    Q2 --> R
+    %% 数据节点
+    Input([Multimodal Dataset]):::dataNode
+    Final([Final Dataset]):::dataNode
+
+    %% 主干流水线
+    subgraph Pipeline ["Multimodal Pipeline (数据处理主干)"]
+        direction TB
+        O1[Operation 1]:::opNode
+        O2[Operation 2]:::opNode
+
+        O1 ==>|主数据流| O2
+    end
+
+    %% 质量评估与汇报模块
+    subgraph QA ["Quality Assurance (质量评估模块)"]
+        direction TB
+        Plugin{{OpsQualityPlugin}}:::pluginNode
+        DB[(In-memory Reports)]:::dbNode
+
+        Plugin -->|统一生成 After-operation Report| DB
+    end
+
+    %% 1. 数据流向 (使用粗箭头突出主链路)
+    Input ==>|输入数据集| O1
+    O2 ==>|输出最终数据| Final
+
+    %% 2. 评估调用流向 (使用细箭头与虚线表示控制/旁路流)
+    Input -.可拓展调用 (Initial Assessment).-> Plugin
+    O1 -->|完成后调用| Plugin
+    O2 -->|完成后调用| Plugin
 ```
 
 ## 阅读路径
 
 1. [设计目标](design-goals.md)：确认为什么评估体系按能力而不是算子类型组织。
 2. [Pipeline 边界](pipeline-boundary.md)：区分 `DataQualityAssessor` 与插入式 `OpsQualityPlugin`。
-3. [插入式评估链路](evaluation-flow.md) 和 [资源控制](resource-control.md)：理解执行模型。
+3. [实现路线与评估链路](implementation-roadmap.md) 和 [资源控制](resource-control.md)：理解执行模型。
 4. [指标定义](metrics/index.md) 与 [报告格式](report-format.md)：用于实现评估器和验收报告。

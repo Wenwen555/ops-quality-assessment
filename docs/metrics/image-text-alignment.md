@@ -2,13 +2,22 @@
 
 ## 用途
 
-评估视觉内容和文字描述的语义对齐程度，主要用于检查 `image_captioning`、视频采样帧描述或其他图文数据生成、清洗、转换后的质量。
+评估视觉内容和文字描述的语义对齐程度，主要用于检查任意文本字段与图像是否语义一致，也可以专门检查 `image_captioning` 生成的 caption artifact。
 
 ## 输入字段
 
-- `image_path` 或 `samples[].frame_path`
-- `caption` 或 `description_units[].description_text`
+- `image_field` 指向的图像字段，默认 `image`；也可以配置为 `image_path`
+- `samples[].frame_path`
+- `caption` 或任意配置的文本字段
+- `text_source`: `caption` 或 `any_text`
 - 可选：`text_signals[].text`
+
+## 文本来源模式
+
+| `text_source` | 行为 |
+| --- | --- |
+| `caption` | 只读取 `text_field`，默认是 `caption`，用于 caption + image alignment。 |
+| `any_text` | 读取 `any_text_fields` 中存在的文本字段，默认覆盖 `text`、`input_text`、`output_text`、`caption`、`before_text`、`after_text`、`description_units[].description_text` 和 `text_signals[].text`。 |
 
 ## 上游产物
 
@@ -25,7 +34,7 @@
 ## 实现逻辑
 
 ```text
-1. 构建视觉-文本 pair，例如 image-caption、frame-description、frame-text_signal。
+1. 根据 `text_source` 构建视觉-文本 pair，例如 image-text、image-caption、frame-description、frame-text_signal。
 2. 用 CLIP 分别编码图像和文本。
 3. 计算图像 embedding 与文本 embedding 的 cosine similarity，得到 pair-level CLIPScore。
 4. 聚合所有 pair 的平均分，输出 `clip_score_mean`。

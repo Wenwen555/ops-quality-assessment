@@ -11,13 +11,14 @@
 - 视频任务限制 `max_videos`、`max_segments_per_video`、`max_frames_per_segment`。
 - QAE 任务限制 `max_triplets_per_video`。
 
-## 分层采样
+<!-- 当前暂时不考虑这一个问题 -->
+<!-- ## 分层采样
 
 为了避免只抽到简单样本，采样时按以下维度分层：
 
 - 模态类型：`image`、`video`、`text`、`multimodal`。
 - 数据来源或 dataset split。
-- 是否存在 `caption`、`samples`、`description_units`、`qae_triplets`。
+- 是否存在 `caption`、`samples`、`description_units`、`qae_triplets`。 -->
 
 ## Embedding Cache
 

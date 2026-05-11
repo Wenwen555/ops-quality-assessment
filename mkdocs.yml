@@ -41,7 +41,6 @@ nav:
   - 设计逻辑:
       - 设计目标: design-goals.md
       - Pipeline 边界: pipeline-boundary.md
-      - 独立评估链路: evaluation-flow.md
       - 资源控制: resource-control.md
   - 指标定义:
       - 指标总览: metrics/index.md
@@ -56,7 +55,7 @@ nav:
       - QAE 证据对齐: metrics/qae-grounding-alignment.md
       - 连贯性评分: metrics/coherence-score.md
   - 报告格式: report-format.md
-  - 实现路线: implementation-roadmap.md
+  - 实现路线与评估链路: implementation-roadmap.md
 
 markdown_extensions:
   - admonition
@@ -86,6 +85,7 @@ markdown_extensions:
       alternate_style: true
 
 plugins:
+  - mermaid2
   - search:
       lang:
         - zh

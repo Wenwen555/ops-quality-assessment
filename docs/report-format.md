@@ -12,14 +12,18 @@ ops_quality_report.md
 
 建议内容：
 
-- 数据集摘要。
-- 字段可用性。
-- 已执行指标。
-- 跳过指标及原因。
-- 各指标分数表。
-- 必测项结论。
-- 模型和配置摘要。
-- 资源消耗摘要。
+<div class="report-capsules" markdown>
+
+- :material-database-search: 数据集摘要
+- :material-table-check: 字段可用性
+- :material-playlist-check: 已执行指标
+- :material-debug-step-over: 跳过指标及原因
+- :material-chart-box-outline: 各指标分数表
+- :material-shield-check: 必测项结论
+- :material-tune-variant: 模型和配置摘要
+- :material-gauge: 资源消耗摘要
+
+</div>
 
 ## JSON 报告
 

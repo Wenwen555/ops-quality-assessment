@@ -13,11 +13,11 @@ MultimodalPipeline.run() 每轮 operation.execute() 后
 
 这条链路适合做轻量监控，例如：
 
-- 字段完整性。
-- 类型一致率。
-- 唯一值比例。
-- 文本长度统计。
-- 空值率和基础异常值。
+- 字段完整性
+- 类型一致率
+- 唯一值比例
+- 文本长度统计
+- 空值率和基础异常值
 
 ## OpsQualityPlugin 边界
 
@@ -26,7 +26,7 @@ MultimodalPipeline.run() 每轮 operation.execute() 后
 - 每个算子后的 `output_ds`，用于评估当前产物质量。
 - `input_ds` 和 `output_ds`，用于构造 before/after 型临时评估 rows。
 
-插件只记录报告，不修改或替换 `MultimodalDataset`，因此不会把评估字段写回后续数据流。
+插件只记录报告，不修改或替换 `MultimodalDataset`，因此评估字段不会出现在后续数据流中。
 
 ## 推荐边界
 
@@ -42,17 +42,17 @@ flowchart TB
     P --> Q[OpsQualityAssessor]
     Q --> R[(staged reports)]
 
-    D --> S[QualityPlugin + DataQualityAssessor]
+    D --> S[QualityPlugin]
     S --> T[(basic quality report)]
 ```
 
-主 pipeline 仍然只负责数据处理。两个 quality plugin 都是旁路观察者：
+主 pipeline 仍然只负责数据处理。两个 quality plugin 作为插件接入：
 
 - `QualityPlugin` 负责基础字段质量。
 - `OpsQualityPlugin` 负责多模态算子产物质量。
 
 ## 数据流约束
 
-- 插件不得改变 `operation.execute()` 的返回数据。
-- 插件评估失败只记录 `warning` 日志，不阻断 pipeline。
-- before/after 型 metric 在插件内部构造临时评估 rows，例如 `before_text=input_ds.text`、`after_text=output_ds.text`，不写回后续数据流。
+- 插件不得改变 `operation.execute()` 的返回数据
+- 插件评估失败只记录 `warning` 日志，不阻断 pipeline
+- before/after 型 metric 在插件内部构造临时评估 rows，例如 `before_text=input_ds.text`

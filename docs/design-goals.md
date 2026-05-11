@@ -1,15 +1,14 @@
 # 设计目标
 
-本评估体系围绕功能指标组织，而不是按文本算子、图像算子、视频算子分别展开。它面向的是“产物是否可靠”，而不是“某个算子是否成功返回”。
+本评估体系围绕功能指标组织，而不是按文本算子、图像算子、视频算子分别展开。它面向的是“产物是否可靠”。
 
 ## 目标
 
 - 使用 `MultimodalDataset` 作为统一数据抽象，兼容 AscendDataForge 现有结构。
-- 不注册为主数据处理 pipeline 的中间算子，不进入 `OperationRegistry` 作为处理节点。
 - 通过 `PipelinePlugin` 在每个算子产物上触发评估。
 - 按字段可用性自动判断哪些指标可以评估。
 - 缺少字段时将指标标记为 `not_applicable` 或 `failed_precondition`，不阻断整体报告。
-- 在插件中记录分阶段评估报告，方便人工复核和后续自动筛选。
+- 在插件中记录分阶段评估报告，方便人工复核和后续筛选。
 
 ## 能力分组
 
@@ -25,9 +24,8 @@
 | 视觉鲁棒性 | 图像算子处理前后是否保持视觉稳定，且不依赖下游任务 evaluator | `visual_robustness` |
 | 问答证据可信度 | QAE triplet 是否能回溯到证据 | `qae_grounding_alignment` |
 
-## 非目标
+## 与 DataQualityAssessor 的差异
 
 !!! note "不替代主 pipeline 的基础健康检查"
     AscendDataForge 已有 `DataQualityAssessor` 用于基础数据质量检查。本评估体系不替代它，而是补充语义层、跨模态层和证据层的质量观测。
 
-第一版运行时代码优先实现插件式评估，优先消费已有 score/embedding，并在缺 embedding 时用配置的模型后端补算；CLIP、BLIP、Cosmos-Embed 或 VLM/LLM judge 可作为后续模型后端接入。

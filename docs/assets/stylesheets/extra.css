@@ -560,6 +560,88 @@ body[data-md-color-scheme="slate"] .whitepaper-hero::before {
   color: var(--oq-blue);
 }
 
+.report-capsules {
+  margin: 0.8rem 0 1.7rem;
+}
+
+.md-typeset .report-capsules > ul:not([hidden]) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.md-typeset .report-capsules > ul > li {
+  --capsule-accent: var(--oq-muted);
+  --capsule-soft: var(--oq-table-head);
+  display: inline-flex;
+  flex: 0 1 auto;
+  gap: 0.42rem;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 2.24rem;
+  margin: 0;
+  padding: 0.34rem 0.68rem 0.34rem 0.44rem;
+  border: 1px solid var(--oq-glass-line);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--oq-canvas) 78%, var(--capsule-soft));
+  box-sizing: border-box;
+  color: var(--oq-ink);
+  font-size: 0.64rem;
+  font-weight: 720;
+  line-height: 1.25;
+  white-space: nowrap;
+  -webkit-backdrop-filter: saturate(180%) blur(22px);
+  backdrop-filter: saturate(180%) blur(22px);
+}
+
+[dir="ltr"] .md-typeset .report-capsules > ul > li {
+  margin-left: 0;
+}
+
+[dir="rtl"] .md-typeset .report-capsules > ul > li {
+  margin-right: 0;
+}
+
+.md-typeset .report-capsules > ul > li::marker {
+  content: "";
+}
+
+.md-typeset .report-capsules > ul > li:nth-child(2),
+.md-typeset .report-capsules > ul > li:nth-child(6) {
+  --capsule-accent: var(--oq-green);
+  --capsule-soft: var(--oq-green-soft);
+}
+
+.md-typeset .report-capsules > ul > li:nth-child(4),
+.md-typeset .report-capsules > ul > li:nth-child(8) {
+  --capsule-accent: var(--oq-orange);
+  --capsule-soft: var(--oq-orange-soft);
+}
+
+.md-typeset .report-capsules > ul > li .twemoji {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 1.38rem;
+  height: 1.38rem;
+  border: 1px solid color-mix(in srgb, var(--capsule-accent) 28%, var(--oq-glass-line));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--capsule-soft) 70%, var(--oq-canvas));
+  color: var(--capsule-accent);
+}
+
+.md-typeset .report-capsules > ul > li .twemoji svg {
+  width: 0.78rem;
+  height: 0.78rem;
+  margin: 0;
+}
+
 .md-typeset .admonition-title,
 .md-typeset summary {
   font-weight: 760;
@@ -646,5 +728,14 @@ body[data-md-color-scheme="slate"] .whitepaper-hero::before {
 
   .whitepaper-hero::before {
     border-radius: 21px;
+  }
+
+  .md-typeset .report-capsules > ul:not([hidden]) {
+    gap: 0.42rem;
+  }
+
+  .md-typeset .report-capsules > ul > li {
+    min-height: 2.1rem;
+    font-size: 0.61rem;
   }
 }
