@@ -1257,11 +1257,11 @@
         <article class="chart-card">
           <span class="card-kicker">text-image-alignment-trend.csv</span>
           <h3>文本-图像对齐趋势</h3>
-          <p>该图对应第三层“跨模态关系”：文本清理阶段保持 1.000，说明清理算子未破坏图文关系；语义遮罩、翻转和 Canny 使分数下降，用于定位关系漂移发生在哪个 stage。</p>
+          <p>该图对应第三层“跨模态关系”：文本清理阶段保持 1.000，说明清理算子未破坏图文关系；语义遮罩会削弱关键实体线索，而本地 CLIP 复核显示水平翻转和黑白 Canny 边缘图对方向无关 caption 的图文语义只造成轻微变化。</p>
           <div class="metric-list">
             <div class="metric-row"><span>input / text ops</span><span class="metric-value">1.000</span></div>
             <div class="metric-row"><span>semantic_keyword_mask</span><span class="metric-value">0.700</span></div>
-            <div class="metric-row"><span>image_random_flip / image_canny</span><span class="metric-value">0.625 / 0.100</span></div>
+            <div class="metric-row"><span>image_random_flip / image_canny</span><span class="metric-value">0.978 / 0.971</span></div>
           </div>
           <div class="chart-canvas" role="img" aria-label="文本图像对齐趋势折线图">
             <svg class="line-chart" viewBox="0 0 640 260" aria-hidden="true">
@@ -1272,14 +1272,14 @@
               <line class="grid" x1="42" y1="190" x2="600" y2="190"></line>
               <line class="axis" x1="42" y1="30" x2="42" y2="190"></line>
               <line class="axis" x1="42" y1="190" x2="600" y2="190"></line>
-              <polyline class="trend" points="42,30 135,30 228,30 321,30 414,78 507,90 600,174"></polyline>
+              <polyline class="trend" points="42,30 135,30 228,30 321,30 414,78 507,34 600,35"></polyline>
               <circle class="point baseline-point" cx="42" cy="30" r="5"></circle>
               <circle class="point" cx="135" cy="30" r="5"></circle>
               <circle class="point" cx="228" cy="30" r="5"></circle>
               <circle class="point" cx="321" cy="30" r="5"></circle>
               <circle class="point" cx="414" cy="78" r="5"></circle>
-              <circle class="point" cx="507" cy="90" r="5"></circle>
-              <circle class="point" cx="600" cy="174" r="5"></circle>
+              <circle class="point" cx="507" cy="34" r="5"></circle>
+              <circle class="point" cx="600" cy="35" r="5"></circle>
               <text x="32" y="33" text-anchor="end">1.0</text>
               <text x="32" y="113" text-anchor="end">0.5</text>
               <text x="32" y="193" text-anchor="end">0.0</text>
@@ -1290,8 +1290,8 @@
               <text x="600" y="214" text-anchor="middle">canny</text>
               <text x="42" y="22" text-anchor="middle">1.000</text>
               <text x="414" y="70" text-anchor="middle">0.700</text>
-              <text x="507" y="82" text-anchor="middle">0.625</text>
-              <text x="600" y="166" text-anchor="middle">0.100</text>
+              <text x="507" y="26" text-anchor="middle">0.978</text>
+              <text x="600" y="27" text-anchor="middle">0.971</text>
             </svg>
           </div>
         </article>
