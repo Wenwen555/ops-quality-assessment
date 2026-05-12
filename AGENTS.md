@@ -13,3 +13,12 @@ policy here.
 - New ops-quality-assessment memory and rules should be added to this file.
 - Deeper package-level `AGENTS.md` files should only add local constraints or
   point back to this file.
+
+
+<claude-mem-context>
+# Memory Context
+
+# [ops-quality-assessment] recent context, 2026-05-12 12:28pm GMT+8
+
+No previous sessions found.
+</claude-mem-context>
