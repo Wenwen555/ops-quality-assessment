@@ -56,7 +56,7 @@ nav:
       - 连贯性评分: metrics/coherence-score.md
   - 报告格式: report-format.md
   - 实现路线与评估链路: implementation-roadmap.md
-  - 可视化报告: ops_quality_visualization_dashboard_pre.html
+  - 可视化报告: assets/reports/ops_quality_visualization_dashboard_pre.html
 
 markdown_extensions:
   - admonition
