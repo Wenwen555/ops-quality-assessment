@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>OpsQuality 算子质量评测报告</title>
+  <title>OpsQuality 样例展示</title>
   <style>
     :root {
       --bg: #ffffff;
@@ -52,6 +52,8 @@
     }
 
     .page {
+      display: flex;
+      flex-direction: column;
       max-width: 1180px;
       margin: 0 auto;
       padding: 0 24px 72px;
@@ -106,11 +108,12 @@
     }
 
     .hero {
-      padding: 86px 0 54px;
+      order: 1;
+      padding: 72px 0 42px;
     }
 
     .hero-copy {
-      max-width: 780px;
+      max-width: 760px;
     }
 
     .eyebrow {
@@ -142,38 +145,38 @@
     h1 {
       max-width: 820px;
       margin-bottom: 20px;
-      font-size: clamp(46px, 7vw, 82px);
-      line-height: 0.96;
+      font-size: clamp(42px, 6vw, 68px);
+      line-height: 1;
       font-weight: 760;
       letter-spacing: -0.035em;
       text-wrap: balance;
     }
 
     .lead {
-      max-width: 680px;
+      max-width: 620px;
       margin-bottom: 24px;
       color: var(--muted);
-      font-size: clamp(17px, 1.7vw, 20px);
+      font-size: clamp(16px, 1.5vw, 18px);
       text-wrap: pretty;
     }
 
     .hero-meta {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      max-width: 940px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      max-width: 620px;
       margin-bottom: 26px;
-      border: 1px solid var(--line);
-      background: var(--white);
     }
 
     .hero-meta-item {
       min-width: 0;
-      padding: 15px 16px;
-      border-right: 1px solid var(--line);
+      padding: 13px 14px;
+      border: 1px solid var(--line);
+      background: var(--surface);
     }
 
     .hero-meta-item:last-child {
-      border-right: 0;
+      border-right: 1px solid var(--line);
     }
 
     .hero-meta-item strong {
@@ -376,6 +379,21 @@
       border-top: 1px solid var(--line);
     }
 
+    #cases {
+      order: 2;
+      padding-top: 48px;
+    }
+
+    #layers {
+      order: 3;
+      padding: 42px 0;
+    }
+
+    #outputs {
+      order: 4;
+      padding: 42px 0;
+    }
+
     .section-head {
       display: grid;
       grid-template-columns: minmax(0, 0.9fr) minmax(280px, 0.55fr);
@@ -440,6 +458,25 @@
       font-size: 14px;
     }
 
+    #layers .steps {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    #layers .step {
+      padding: 42px 14px 0 0;
+    }
+
+    #layers .step p {
+      display: none;
+    }
+
+    #layers .section-note,
+    #outputs .section-note {
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
     .trend-brief {
       display: grid;
       grid-template-columns: minmax(0, 0.9fr) minmax(300px, 0.65fr);
@@ -449,6 +486,32 @@
       padding: 24px;
       border: 1px solid var(--line);
       background: var(--surface);
+    }
+
+    #outputs .trend-brief {
+      display: none;
+    }
+
+    #outputs .chart-card {
+      grid-template-columns: minmax(260px, 0.6fr) minmax(0, 1fr);
+      gap: 20px;
+      padding: 22px;
+    }
+
+    #outputs .chart-card p {
+      margin-bottom: 4px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    #outputs .metric-row:nth-child(n + 3) {
+      display: none;
+    }
+
+    #outputs .chart-canvas {
+      min-height: 250px;
+      padding: 16px;
     }
 
     .trend-brief h3 {
@@ -732,24 +795,57 @@
 
     .evidence-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      border: 1px solid var(--line);
-      background: var(--white);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      border: 0;
+      background: transparent;
     }
 
     .evidence-card {
       min-width: 0;
-      padding: 24px;
-      border-right: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
+      padding: 18px;
+      border: 1px solid var(--line);
+      background: var(--white);
     }
 
     .evidence-card:nth-child(2n) {
-      border-right: 0;
+      border-right: 1px solid var(--line);
     }
 
     .evidence-card:nth-last-child(-n + 2) {
-      border-bottom: 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    #cases .evidence-card:first-child,
+    #cases .evidence-card:last-child {
+      grid-column: span 2;
+    }
+
+    #cases .evidence-card p {
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    #cases .evidence-card h3 {
+      margin-bottom: 8px;
+      font-size: 18px;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+    }
+
+    #cases .metric-list {
+      margin-top: 12px;
+    }
+
+    #cases .metric-row {
+      padding: 8px 0;
+      font-size: 12px;
+    }
+
+    #cases .metric-row:nth-child(n + 3) {
+      display: none;
     }
 
     .status {
@@ -788,8 +884,8 @@
     .media-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin: 16px 0;
+      gap: 8px;
+      margin: 12px 0;
     }
 
     .media-grid.single {
@@ -816,10 +912,10 @@
     }
 
     .text-sample {
-      margin: 16px 0;
-      padding: 14px 0;
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid var(--line);
+      background: var(--surface);
     }
 
     .text-sample strong {
@@ -832,7 +928,7 @@
     .text-sample p {
       margin: 0;
       color: var(--ink);
-      font-size: 14px;
+      font-size: 13px;
     }
 
     .matrix-wrap {
@@ -950,6 +1046,28 @@
         border-bottom: 0;
       }
 
+      .hero {
+        padding-top: 58px;
+      }
+
+      .hero-meta {
+        grid-template-columns: 1fr;
+      }
+
+      #layers .steps,
+      #cases .evidence-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      #outputs .chart-card {
+        grid-template-columns: 1fr;
+      }
+
+      #cases .evidence-card:first-child,
+      #cases .evidence-card:last-child {
+        grid-column: auto;
+      }
+
       .evidence-card {
         border-right: 0;
       }
@@ -1011,6 +1129,11 @@
       .evidence-card:last-child {
         border-bottom: 0;
       }
+
+      #cases .evidence-card,
+      #cases .evidence-card:last-child {
+        border: 1px solid var(--line);
+      }
     }
 
     @media (max-width: 700px) {
@@ -1028,6 +1151,11 @@
 
       .hero {
         padding-top: 58px;
+      }
+
+      #layers .steps,
+      #cases .evidence-grid {
+        grid-template-columns: 1fr;
       }
 
       .media-grid {
@@ -1048,10 +1176,9 @@
         <span>OpsQuality</span>
       </a>
       <div class="nav-links">
-        <a href="#layers">重要问题</a>
-        <a href="#outputs">输出结果</a>
-        <a href="#matrix">证据矩阵</a>
         <a href="#cases">代表样例</a>
+        <a href="#outputs">输出概览</a>
+        <a href="#layers">评估问题</a>
       </div>
     </nav>
   </header>
@@ -1060,77 +1187,23 @@
     <section class="hero" aria-labelledby="dashboard-title">
       <div class="hero-copy">
         <div class="eyebrow">operator quality observatory</div>
-        <h1 id="dashboard-title">OpsQuality 算子质量评测报告</h1>
+        <h1 id="dashboard-title">OpsQuality 样例展示</h1>
         <p class="lead">
-          该报告以多模态数据 Pipeline 的算子为评估单元，围绕数据规范、语义保持、跨模态关系、受控扰动和训练监督证据建立质量证据链，判断处理后的数据是否仍适合进入后续 MLLM Post-Training。
+          用代表样例展示多模态数据 Pipeline 中的关键质量信号：caption 是否可靠、增强是否受控、视频帧是否可追溯，以及 QAE 证据是否能回到具体样本。
         </p>
-        <div class="hero-meta" aria-label="报告定位">
+        <div class="hero-meta" aria-label="展示定位">
           <div class="hero-meta-item">
-            <strong>评估单元</strong>
-            <span>以 Ray Dataset 算子快照和 before / after 产物为基本对象</span>
+            <strong>主展示</strong>
+            <span>图片、增强视图、代表帧和文本片段直接呈现</span>
           </div>
           <div class="hero-meta-item">
-            <strong>核心问题</strong>
-            <span>定位数据结构、语义表达和跨模态关系在哪个 stage 出现变化</span>
+            <strong>辅助信息</strong>
+            <span>每张样例只保留少量关键指标，完整解释后置</span>
           </div>
         </div>
         <div class="hero-actions">
-          <a class="button" href="#layers">查看报告</a>
-          <a class="button secondary" href="#cases">查看代表样例</a>
-        </div>
-      </div>
-
-      <div class="browser" aria-label="汇报说明预览">
-        <div class="browser-bar">
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="browser-url">ops-quality report</span>
-        </div>
-        <div class="browser-body">
-          <aside class="browser-sidebar">
-            <h2 class="preview-title">报告主线</h2>
-            <p class="preview-subtitle">从算子产物到训练监督的审计路径</p>
-            <div class="preview-list">
-              <div class="preview-row">
-                <p class="preview-label">先确认数据能被消费：字段、产物、before / after 配对和可追溯条件是否成立</p>
-              </div>
-              <div class="preview-row">
-                <p class="preview-label">再判断样本本意是否被改写：清理和规范化必须降低噪声而不制造新语义</p>
-              </div>
-              <div class="preview-row">
-                <p class="preview-label">最后追踪跨模态关系、受控扰动和训练监督证据是否仍然可信</p>
-              </div>
-            </div>
-          </aside>
-          <div class="browser-main">
-            <h2 class="placeholder-heading">数据质量证据链</h2>
-            <p class="placeholder-copy">
-              当前评测把每个算子前后的数据产物组织为可审计的对象。假如字段结构不稳定，后续语义评测会读错对象；若文本语义被清理算子改坏，图文相似度也无法解释；若 QAE 缺少证据引用，下游 judge 的分数同样不可追溯。
-            </p>
-            <div class="chain-grid" aria-label="质量风险与证据链">
-              <div class="chain-item">
-                <strong>结构风险</strong>
-                <span>字段缺失、schema 不一致或样本无法配对时，后续指标无法形成可靠审计</span>
-              </div>
-              <div class="chain-item">
-                <strong>语义风险</strong>
-                <span>文本清理应降低重复和非规范残留，而不是改变主体、事实或描述范围</span>
-              </div>
-              <div class="chain-item">
-                <strong>关系风险</strong>
-                <span>Trend 图追踪图文关系、视频片段与代表帧关系在各算子处理下的漂移来源</span>
-              </div>
-              <div class="chain-item">
-                <strong>监督风险</strong>
-                <span>Caption、描述单元和 QAE 三元组需要能回到视觉、文本和时间证据</span>
-              </div>
-            </div>
-            <div class="scope-note">
-              <strong>报告边界</strong>
-              <p>当模型、字段或下游任务协议缺失时，以“不适用”或“受阻”明确标注。</p>
-            </div>
-          </div>
+          <a class="button" href="#cases">查看代表样例</a>
+          <a class="button secondary" href="#outputs">查看输出概览</a>
         </div>
       </div>
     </section>
@@ -1201,8 +1274,8 @@
       <div class="chart-grid">
         <article class="chart-card">
           <span class="card-kicker">schema-aligned-text-cleanup-quality.csv</span>
-          <h3>Schema 对齐文本清理质量</h3>
-          <p>该图对应第二层“保义清理”：文本清理后，n-gram 重复率从 0.239 降至 0.112，残留未标准化模式从 1.000 降至 0.143；关注点是质量收益来自噪声下降，而不是语义漂移。</p>
+          <h3>文本清理质量变化</h3>
+          <p>文本清理后，n-gram 重复率从 0.239 降至 0.112，残留未标准化模式从 1.000 降至 0.143；关注点是质量收益来自噪声下降，而不是语义漂移。</p>
           <div class="metric-list">
             <div class="metric-row"><span>ngram_repetition_rate_mean</span><span class="metric-value">0.239 -> 0.112</span></div>
             <div class="metric-row"><span>residual_unstandardized_pattern_rate</span><span class="metric-value">1.000 -> 0.143</span></div>
@@ -1257,7 +1330,7 @@
         <article class="chart-card">
           <span class="card-kicker">text-image-alignment-trend.csv</span>
           <h3>文本-图像对齐趋势</h3>
-          <p>该图对应第三层“跨模态关系”：趋势在 Messi 样例图上按当前 image 与当前 caption/text 的 embedding cosine 重跑。水平翻转的 before 是 mask 产物，Canny 的 before 是 masked + flipped 图像；Canny after 使用同一当前 caption 与 Canny 后图像重新计算 cosine。</p>
+          <p>该图对应“跨模态关系”：在 Messi 样例图上按当前 image 与当前 caption/text 的 embedding cosine 进行测量。水平翻转的 before 是 mask 产物，Canny 的 before 是 masked + flipped 图像；Canny after 使用同一当前 caption 与 Canny 后图像重新计算 cosine。</p>
           <div class="metric-list">
             <div class="metric-row"><span>input / first text ops</span><span class="metric-value">0.627</span></div>
             <div class="metric-row"><span>remove_stopwords / mask</span><span class="metric-value">0.600 / 0.580</span></div>
@@ -1300,11 +1373,10 @@
         <article class="chart-card">
           <span class="card-kicker">image-video-alignment-trend.csv</span>
           <h3>图像-视频对齐趋势</h3>
-          <p>该图对应第三层和第四层：视频片段与采样帧关系在翻转后基本保持，裁剪后轻微下降；Canny 后仍有 0.722，且 temporal_coverage_rate 为 1.000，说明时间覆盖证据仍可追踪。</p>
+          <p>视频片段与采样帧关系在翻转后基本保持，裁剪后轻微下降；Canny 后仍有 0.722。</p>
           <div class="metric-list">
             <div class="metric-row"><span>input / flip / crop</span><span class="metric-value">0.949 / 0.947 / 0.912</span></div>
             <div class="metric-row"><span>image_canny</span><span class="metric-value">0.722</span></div>
-            <div class="metric-row"><span>temporal_coverage_rate</span><span class="metric-value">1.000</span></div>
           </div>
           <div class="chart-canvas" role="img" aria-label="图像视频对齐趋势折线图">
             <svg class="line-chart" viewBox="0 0 640 260" aria-hidden="true">
@@ -1337,184 +1409,17 @@
       </div>
     </section>
 
-    <section id="matrix" class="section" aria-labelledby="matrix-title">
-      <div class="section-head">
-        <div>
-          <h2 id="matrix-title">算子与指标之间的关系</h2>
-          <div class="legend" aria-label="矩阵图例">
-            <span class="status check">质量检测</span>
-            <span class="status impact">前后变化</span>
-            <span class="status na">不适用</span>
-            <span class="status blocked">受阻</span>
-          </div>
-        </div>
-        <p class="section-note">矩阵承担算子和评测功能的关系说明：哪些算子应该产生可评测产物，哪些评测在当前算子下不适用，哪些受阻来自前置条件缺失而不是质量低。</p>
-      </div>
-
-      <div class="matrix-wrap" role="region" aria-label="算子指标证据矩阵" tabindex="0">
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">算子</th>
-              <th scope="col">文本噪声<span class="metric-code">text_noise_contamination</span></th>
-              <th scope="col">规范化有效性<span class="metric-code">text_normalization_validity</span></th>
-              <th scope="col">语义保持<span class="metric-code">text_semantic_preservation</span></th>
-              <th scope="col">图文一致性<span class="metric-code">image_text_alignment</span></th>
-              <th scope="col">物体幻觉<span class="metric-code">chair_object_hallucination</span></th>
-              <th scope="col">变换一致性<span class="metric-code">visual_transform_consistency</span></th>
-              <th scope="col">视觉鲁棒性<span class="metric-code">visual_robustness</span></th>
-              <th scope="col">视频-帧对齐<span class="metric-code">video_image_alignment</span></th>
-              <th scope="col">描述连贯性<span class="metric-code">coherence_score</span></th>
-              <th scope="col">QAE 证据扎根<span class="metric-code">qae_grounding_alignment</span></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row"><span class="op-name">text_normalization</span><span class="op-family">文本清理</span></th>
-              <td><span class="status check">质量检测</span></td>
-              <td><span class="status impact">前后变化</span></td>
-              <td><span class="status check">质量检测</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-            </tr>
-            <tr>
-              <th scope="row"><span class="op-name">remove_repetitions_punctuation</span><span class="op-family">文本清理</span></th>
-              <td><span class="status check">质量检测</span></td>
-              <td><span class="status impact">前后变化</span></td>
-              <td><span class="status check">质量检测</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-            </tr>
-            <tr>
-              <th scope="row"><span class="op-name">image_captioning</span><span class="op-family">图像描述产物</span></th>
-              <td><span class="status check">质量检测</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status check">质量检测</span></td>
-              <td><span class="status check">质量检测</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-            </tr>
-            <tr>
-              <th scope="row"><span class="op-name">image_random_crop</span><span class="op-family">图像增强</span></th>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status impact">前后变化</span></td>
-              <td><span class="status impact">前后变化</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-            </tr>
-            <tr>
-              <th scope="row"><span class="op-name">image_random_flip</span><span class="op-family">图像增强</span></th>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status impact">前后变化</span></td>
-              <td><span class="status impact">前后变化</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-            </tr>
-            <tr>
-              <th scope="row"><span class="op-name">image_canny</span><span class="op-family">图像增强</span></th>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status impact">前后变化</span></td>
-              <td><span class="status impact">前后变化</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-            </tr>
-            <tr>
-              <th scope="row"><span class="op-name">video_partition</span><span class="op-family">视频结构</span></th>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status blocked">受阻</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-            </tr>
-            <tr>
-              <th scope="row"><span class="op-name">video_sampling</span><span class="op-family">视频采样</span></th>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status check">质量检测</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-            </tr>
-            <tr>
-              <th scope="row"><span class="op-name">video_multigranularity_description</span><span class="op-family">视频描述</span></th>
-              <td><span class="status check">质量检测</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status check">质量检测</span></td>
-              <td><span class="status check">质量检测</span></td>
-              <td><span class="status na">不适用</span></td>
-            </tr>
-            <tr>
-              <th scope="row"><span class="op-name">video_qae_materialization</span><span class="op-family">QAE 产物</span></th>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status na">不适用</span></td>
-              <td><span class="status check">质量检测</span></td>
-              <td><span class="status check">质量检测</span></td>
-              <td><span class="status check">质量检测</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
     <section id="cases" class="section" aria-labelledby="cases-title">
       <div class="section-head">
         <h2 id="cases-title">代表样例</h2>
-        <p class="section-note">利用具体产物来说明 caption、增强视图、代表帧和 QAE 三元组的具体评测结果</p>
+        <p class="section-note">利用具体产物说明文本-图像对齐、对象保真度、视觉鲁棒性、视频-图像对齐和 QAE 证据接地的评测结果</p>
       </div>
 
       <div class="evidence-grid">
         <article class="evidence-card">
           <span class="status check">质量检测</span>
-          <h3>图像描述与 CHAIR 主体检测</h3>
-          <p>该卡片对应第五层“训练监督可信性”：Qwen3-VL-2B-Instruct 生成 caption，BLIP 识别视觉主体后计算 CHAIR，用视觉主体约束 caption 监督信号。</p>
+          <h3>文本-图像对齐评估与对象保真度评估</h3>
+          <p><strong>对象保真度：</strong>Caption 提到的物体是否真的在图中。该卡片同时用 CLIPScore 评估整体文本-图像对齐，并用 CHAIR-style 主体检测检查 caption 是否覆盖且不虚构视觉主体。</p>
           <div class="media-grid single">
             <figure>
               <img src="ops_quality_dashboard_assets/butterfly.jpg" alt="蝴蝶停在绿色叶片上的样例图">
@@ -1531,8 +1436,8 @@
 
         <article class="evidence-card">
           <span class="status impact">前后变化</span>
-          <h3>水平翻转增强视图</h3>
-          <p>该卡片对应第四层“受控扰动”：水平翻转允许像素结构发生镜像重排，但主体语义和可学习关系应保持在可解释边界内。</p>
+          <h3>视觉变换一致性评估与鲁棒性评估</h3>
+          <p>视觉变换一致性评估关注 flip 等增强后主体语义是否仍成立；鲁棒性评估关注 embedding drift 和结构相似度，判断扰动是否停留在可解释边界内。</p>
           <div class="media-grid">
             <figure>
               <img src="ops_quality_dashboard_assets/messi_source.jpg" alt="足球运动员增强前样例">
@@ -1544,8 +1449,6 @@
             </figure>
           </div>
           <div class="metric-list">
-            <div class="metric-row"><span>image_text.raw_messi / flipped_messi</span><span class="metric-value">0.627 / 0.627</span></div>
-            <div class="metric-row"><span>image_text.delta_after_before</span><span class="metric-value">-0.001</span></div>
             <div class="metric-row"><span>transform.semantic_similarity_before_after</span><span class="metric-value">0.994</span></div>
             <div class="metric-row"><span>robustness.embedding_drift_mean</span><span class="metric-value">0.006</span></div>
             <div class="metric-row"><span>robustness.structural_similarity_mean</span><span class="metric-value">0.240</span></div>
@@ -1554,8 +1457,8 @@
 
         <article class="evidence-card">
           <span class="status check">质量检测</span>
-          <h3>代表帧覆盖视频片段</h3>
-          <p>该卡片对应第三层“视频片段和代表帧关系”：temporal_coverage_rate 为 1.000，说明每个评测片段都有代表帧覆盖；代表帧使采样位置可被人工复核。</p>
+          <h3>视频-图像对齐评估</h3>
+          <p>视频-图像对齐评估关注代表帧是否能语义代表对应片段。</p>
           <div class="media-grid">
             <figure>
               <img src="ops_quality_dashboard_assets/megamind_segment_1_frame.jpg" alt="Megamind 第一片段代表帧">
@@ -1567,15 +1470,14 @@
             </figure>
           </div>
           <div class="metric-list">
-            <div class="metric-row"><span>trend.temporal_coverage_rate</span><span class="metric-value">1.000</span></div>
-            <div class="metric-row"><span>trend.image_canny_alignment</span><span class="metric-value">0.722</span></div>
+            <div class="metric-row"><span>image_video_alignment</span><span class="metric-value">0.722</span></div>
           </div>
         </article>
 
         <article class="evidence-card">
           <span class="status check">质量检测</span>
-          <h3>视频描述连贯性样例</h3>
-          <p>该卡片连接第二层和第五层：描述文本不仅要存在，还要避免模板化重复，否则会形成低价值训练监督。</p>
+          <h3>视频描述连贯性评估与重复描述检测</h3>
+          <p>连贯性评估关注相邻描述是否围绕同一事件链；重复描述检测关注模板化复述是否过高，避免形成低价值训练监督。</p>
           <div class="text-sample">
             <strong>desc_000001</strong>
             <p>The image depicts an animated character sitting at a table with a glass of wine. The character appears to be in a restaurant or a similar setting...</p>
@@ -1585,16 +1487,14 @@
             <p>The image depicts an animated character holding a glass of champagne. The setting appears to be a dimly lit, possibly upscale restaurant or bar...</p>
           </div>
           <div class="metric-list">
-            <div class="metric-row"><span>coherence.coherence_score</span><span class="metric-value">0.000</span></div>
-            <div class="metric-row"><span>coherence.duplicate_description_rate</span><span class="metric-value">1.000</span></div>
-            <div class="metric-row"><span>text_noise.ngram_repetition_rate_mean</span><span class="metric-value">0.214</span></div>
+            <div class="metric-row"><span>coherence.duplicate_description_rate</span><span class="metric-value">0.923</span></div>
           </div>
         </article>
 
         <article class="evidence-card">
           <span class="status impact">前后变化</span>
-          <h3>文本清理 before / after</h3>
-          <p>该样例对应第二层“去噪且保义”：before / after 不是展示文本更整齐，而是检查噪声下降是否没有改变原始事实描述。</p>
+          <h3>文本噪声污染评估与规范化有效性评估</h3>
+          <p>文本噪声污染评估关注重复词和异常字符是否下降；规范化有效性评估关注日期、标点等格式清理后是否仍保留原始事实描述。</p>
           <div class="text-sample">
             <strong>清理前</strong>
             <p>On 04/12/2025 a black butterfly butterfly with white spots rests rests on a green green leaf!!!</p>
@@ -1611,8 +1511,8 @@
 
         <article class="evidence-card">
           <span class="status check">质量检测</span>
-          <h3>QAE 物化前置条件</h3>
-          <p>该卡片对应第五层“证据支撑”：使用 Megamind 两个相邻餐厅片段重新采样 4 帧，并接入 llm_client 生成 QAE 三元组；图像、文本和时间证据都能回到具体 sample id，不再把前置条件缺失误读为低质量分数。</p>
+          <h3>QAE 证据可信评估</h3>
+          <p>证据可信评估关注答案是否能被图像、文本和时间证据支撑。</p>
           <div class="media-grid">
             <figure>
               <img src="ops_quality_dashboard_assets/qae_megamind_seg0001_f024.jpg" alt="Megamind 餐厅片段中女子举着香槟杯">
@@ -1644,10 +1544,7 @@
             <p>image.sample_ids: qae_megamind_seg0001_f024, qae_megamind_seg0001_f072, qae_megamind_seg0002_f042, qae_megamind_seg0002_f084；text.evidence_unit_ids: ev_megamind_restaurant_exchange；temporal.temporal_unit_ids: tmp_megamind_restaurant_exchange。</p>
           </div>
           <div class="metric-list">
-            <div class="metric-row"><span>materialized.llm_triplets</span><span class="metric-value">1 / 1</span></div>
             <div class="metric-row"><span>qae.evidence_hit_rate</span><span class="metric-value">1.000</span></div>
-            <div class="metric-row"><span>qae.answer_support_rate</span><span class="metric-value">1.000</span></div>
-            <div class="metric-row"><span>qae.llm_pass_rate</span><span class="metric-value">1.000</span></div>
           </div>
         </article>
       </div>

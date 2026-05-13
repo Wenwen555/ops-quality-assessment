@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpsQuality 算子能力总表</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --ink: #1d1d1f;
+      --muted: #6e6e73;
+      --soft: #f5f5f7;
+      --line: #d2d2d7;
+      --line-soft: #e8e8ed;
+      --blue: #0071e3;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", "Microsoft YaHei", sans-serif;
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    code {
+      padding: 1px 5px;
+      border-radius: 5px;
+      background: var(--soft);
+      color: var(--muted);
+      font-family: "SF Mono", "Cascadia Mono", Consolas, monospace;
+      font-size: 0.78em;
+      letter-spacing: 0;
+    }
+
+    .page {
+      width: min(1480px, calc(100% - 80px));
+      margin: 0 auto;
+      padding: 72px 0;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.18fr) minmax(320px, 0.82fr);
+      gap: 48px;
+      align-items: stretch;
+    }
+
+    .layout > section {
+      min-width: 0;
+    }
+
+    .layout > section[aria-labelledby="function-title"] {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .section-title {
+      margin: 0 0 28px;
+      font-size: clamp(32px, 3vw, 48px);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+    }
+
+    .table-wrap {
+      border-top: 1px solid var(--line);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    col:nth-child(1) {
+      width: 11%;
+    }
+
+    col:nth-child(2) {
+      width: 25%;
+    }
+
+    col:nth-child(3) {
+      width: 38%;
+    }
+
+    col:nth-child(4) {
+      width: 26%;
+    }
+
+    th,
+    td {
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--line-soft);
+      text-align: left;
+      vertical-align: top;
+      overflow-wrap: anywhere;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+
+    td {
+      color: var(--muted);
+      font-size: 12.5px;
+    }
+
+    td:first-child,
+    td:nth-child(2) {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .muted-row td {
+      color: #8a8a8f;
+      background: #fbfbfd;
+    }
+
+    .function-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      flex: 1;
+    }
+
+    .function-card {
+      display: grid;
+      grid-template-columns: 118px minmax(0, 1fr);
+      grid-template-areas:
+        "label desc"
+        "title chips";
+      column-gap: 18px;
+      row-gap: 8px;
+      min-height: 0;
+      padding: 14px 16px;
+      border: 1px solid var(--line-soft);
+      background: #ffffff;
+    }
+
+    .function-card__label {
+      grid-area: label;
+      margin: 0;
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .function-card h3 {
+      grid-area: title;
+      margin: 0;
+      font-size: clamp(21px, 1.45vw, 25px);
+      line-height: 1.08;
+      font-weight: 700;
+      letter-spacing: -0.035em;
+    }
+
+    .function-card__desc {
+      grid-area: desc;
+      margin: 0;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
+
+    .chips {
+      grid-area: chips;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 32px;
+      padding: 5px 9px 5px 6px;
+      border: 1px solid var(--line);
+      color: var(--ink);
+      background: #ffffff;
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    .chip.is-primary {
+      border-color: rgba(0, 113, 227, 0.35);
+      color: var(--blue);
+      background: rgba(0, 113, 227, 0.06);
+    }
+
+    .chip span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 36px;
+      height: 22px;
+      border: 1px solid currentColor;
+      font-family: "SF Mono", "Cascadia Mono", Consolas, monospace;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 1180px) {
+      .layout {
+        grid-template-columns: 1fr;
+        gap: 64px;
+      }
+
+      .layout > section[aria-labelledby="function-title"] {
+        display: block;
+      }
+
+      .function-grid {
+        grid-template-rows: auto;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        width: min(100% - 32px, 1480px);
+        padding: 44px 0;
+      }
+
+      .function-card {
+        display: block;
+        padding: 18px;
+      }
+
+      .function-card__label,
+      .function-card h3,
+      .function-card__desc {
+        margin-bottom: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="layout">
+      <section aria-labelledby="table-title">
+        <h2 id="table-title" class="section-title">算子表格</h2>
+        <div class="table-wrap">
+          <table>
+            <colgroup>
+              <col>
+              <col>
+              <col>
+              <col>
+            </colgroup>
+            <thead>
+              <tr>
+                <th>编号</th>
+                <th>算子名称</th>
+                <th>核心功能</th>
+                <th>支撑的模型能力</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="muted-row">
+                <td>T1-T10</td>
+                <td>Text Operators</td>
+                <td>文本加载、清洗、规范化、增强、过滤与保存等 …</td>
+                <td>文本质量评估、语义保持、规范化鲁棒性 …</td>
+              </tr>
+              <tr class="muted-row">
+                <td>I1-I10</td>
+                <td>Image Operators</td>
+                <td>图像加载、Caption、视觉增强、质量过滤与保存等 …</td>
+                <td>图文对齐、对象保真度、视觉鲁棒性 …</td>
+              </tr>
+              <tr>
+                <td>A1</td>
+                <td>Partition</td>
+                <td>视频分割（语义/镜头/固定窗口）</td>
+                <td>时序边界感知</td>
+              </tr>
+              <tr>
+                <td>A2</td>
+                <td>Context Orchestration</td>
+                <td>上下文编排，合并短片段与附加引用</td>
+                <td>多片段推理</td>
+              </tr>
+              <tr>
+                <td>A3</td>
+                <td>Sampling</td>
+                <td>帧采样（语义感知/运动感知等策略）</td>
+                <td>关键帧识别、动作捕捉</td>
+              </tr>
+              <tr>
+                <td>A4</td>
+                <td>Multigranularity Description</td>
+                <td>多粒度视觉描述生成（帧级→上下文级）</td>
+                <td>多粒度理解</td>
+              </tr>
+              <tr>
+                <td>A5</td>
+                <td>Temporal Structure</td>
+                <td>时序结构提取，构建事件窗口与事件链</td>
+                <td>时序推理、事件理解</td>
+              </tr>
+              <tr>
+                <td>A6</td>
+                <td>Text Evidence</td>
+                <td>文本证据提取（OCR/字幕/ASR）</td>
+                <td>跨模态理解、文本证据</td>
+              </tr>
+              <tr>
+                <td>A7</td>
+                <td>Scaffold Construction</td>
+                <td>脚手架构建，组织事件树与动作图</td>
+                <td>结构化推理、动作理解</td>
+              </tr>
+              <tr>
+                <td>A8</td>
+                <td>QAE Materialization</td>
+                <td>QAE 三元组实例化与证据绑定</td>
+                <td>QA 生成、证据推理</td>
+              </tr>
+              <tr>
+                <td>A9</td>
+                <td>Consistency Revision</td>
+                <td>一致性修订，修正字段错位与证据缺失</td>
+                <td>数据质量控制</td>
+              </tr>
+              <tr>
+                <td>A10</td>
+                <td>Quality Screening</td>
+                <td>质量筛选，多维度评估与层级分配</td>
+                <td>数据集分层、质量保障</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section aria-labelledby="function-title">
+        <h2 id="function-title" class="section-title">功能划分</h2>
+        <div class="function-grid">
+          <section class="function-card">
+            <p class="function-card__label">Foundation</p>
+            <h3>基础入口</h3>
+            <p class="function-card__desc">负责把原视频切片，并执行 <code>MERGE_STITCH</code>、<code>WINDOW_ATTACH</code>、<code>FILTER_HINT</code> 后再统一采样。</p>
+            <div class="chips">
+              <span class="chip is-primary"><span>A1</span>划分</span>
+              <span class="chip"><span>A2</span>编排</span>
+              <span class="chip"><span>A3</span>采样</span>
+            </div>
+          </section>
+
+          <section class="function-card">
+            <p class="function-card__label">Scaffold</p>
+            <h3>结构骨架</h3>
+            <p class="function-card__desc">负责多粒度描述、时序结构、文本辅证和骨架单元构建，是数据构造的主干。</p>
+            <div class="chips">
+              <span class="chip"><span>A4</span>多粒度描述</span>
+              <span class="chip"><span>A5</span>时序结构</span>
+              <span class="chip"><span>A6</span>文本辅证</span>
+              <span class="chip"><span>A7</span>结构骨架</span>
+            </div>
+          </section>
+
+          <section class="function-card">
+            <p class="function-card__label">Synthesis</p>
+            <h3>数据合成</h3>
+            <p class="function-card__desc">负责在结构骨架约束下共同生成 Question、Answer 和 Evidence，并做初步筛查。</p>
+            <div class="chips">
+              <span class="chip"><span>A8</span>QAE合成</span>
+              <span class="chip"><span>A9</span>一致性回修</span>
+            </div>
+          </section>
+
+          <section class="function-card">
+            <p class="function-card__label">Check</p>
+            <h3>质量检测</h3>
+            <p class="function-card__desc">负责按规则、评分和样本价值做质量筛查，是系统的最终出口。</p>
+            <div class="chips">
+              <span class="chip"><span>A10</span>质量筛查</span>
+            </div>
+          </section>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
